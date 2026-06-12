@@ -56,6 +56,11 @@ def render_site(
         if full
         else "No fully qualified opportunities found"
     )
+    near_block = (
+        _near_section(near_rows)
+        if near
+        else '<p class="muted">No still-open near-matches were found.</p>'
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -253,7 +258,7 @@ def render_site(
     {filters}
     {_curated_section(curated_rows) if curated else _empty_curated_section()}
     {_qualified_section(full_rows) if full else ""}
-    {_near_section(near_rows) if near else "<p class=\"muted\">No still-open near-matches were found.</p>"}
+    {near_block}
     {_notes_section(notes) if notes else ""}
   </main>
   <footer class="wrap">Near-matches are not treated as qualified opportunities. Detailed screening data remains available in candidates.json.</footer>
