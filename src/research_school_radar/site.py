@@ -11,6 +11,107 @@ from urllib.parse import quote
 from .models import Candidate
 
 
+# Shared base styles for all generated pages. Interpolated into f-string
+# templates as a value, so it uses normal CSS braces.
+_THEME_CSS = """    :root {
+      color-scheme: light dark;
+      --bg: #f2f5f7;
+      --panel: #ffffff;
+      --panel-2: #f8fafb;
+      --ink: #16202b;
+      --muted: #5b6b7b;
+      --line: #dde5ec;
+      --accent: #0e7490;
+      --accent-ink: #0b5c73;
+      --accent-soft: #eef7fa;
+      --good: #15803d;
+      --good-soft: #e3f6e9;
+      --warn: #92590a;
+      --warn-soft: #fdf2d0;
+      --shadow: 0 1px 2px rgba(22, 32, 43, .05), 0 6px 24px rgba(22, 32, 43, .07);
+      --hero-1: #0b3550;
+      --hero-2: #0e7490;
+      --hero-3: #0f766e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e1620;
+        --panel: #16212e;
+        --panel-2: #1a2735;
+        --ink: #e4ecf4;
+        --muted: #93a5b8;
+        --line: #28394c;
+        --accent: #38bdf8;
+        --accent-ink: #7dd3fc;
+        --accent-soft: #142d3c;
+        --good: #4ade80;
+        --good-soft: #15301f;
+        --warn: #fbbf24;
+        --warn-soft: #383018;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 28px rgba(0, 0, 0, .35);
+        --hero-1: #0a2230;
+        --hero-2: #0c4a5e;
+        --hero-3: #0b3d3a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+    }
+    a { color: var(--accent-ink); text-underline-offset: 2px; }
+    a:hover { color: var(--accent); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 13px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--panel-2);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+    }
+    tbody tr:hover { background: var(--accent-soft); }
+    tr:last-child td { border-bottom: 0; }
+"""
+
+
 def write_site(
     candidates: list[Candidate],
     errors: list[str],
@@ -67,180 +168,167 @@ def render_site(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Research Seasonal School Radar</title>
+  <meta name="description" content="A free daily radar for funded research summer schools, winter schools, and training schools in water, climate, hydrology, geoscience, remote sensing, AI, and scientific machine learning.">
+  <meta property="og:title" content="Research Seasonal School Radar">
+  <meta property="og:description" content="Daily scan of trusted academic sources for funded research training opportunities, with hard filters and visible evidence.">
+  <meta property="og:type" content="website">
   <style>
-    :root {{
-      color-scheme: light;
-      --bg: #f7f7f4;
-      --panel: #ffffff;
-      --ink: #202124;
-      --muted: #5f6368;
-      --line: #d7d9d2;
-      --accent: #176b87;
-      --accent-soft: #d9edf2;
-      --warn: #8a5a00;
-      --warn-soft: #fff3cf;
+{_THEME_CSS}
+    header.hero {{
+      background: linear-gradient(135deg, var(--hero-1), var(--hero-2) 55%, var(--hero-3));
+      color: #f3f9fc;
+      padding: 44px 0 86px;
     }}
-    * {{ box-sizing: border-box; }}
-    body {{
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.5;
-    }}
-    header {{
-      border-bottom: 1px solid var(--line);
-      background: var(--panel);
-    }}
-    .wrap {{
-      width: min(1180px, calc(100vw - 32px));
-      margin: 0 auto;
-    }}
-    .top {{
-      padding: 32px 0 24px;
+    .kicker {{
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: rgba(243, 249, 252, .75);
     }}
     h1 {{
-      margin: 0 0 8px;
-      font-size: 32px;
-      letter-spacing: 0;
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4.5vw, 40px);
+      letter-spacing: -0.02em;
     }}
     .subtitle {{
-      max-width: 850px;
-      color: var(--muted);
+      max-width: 860px;
+      color: rgba(243, 249, 252, .85);
       margin: 0;
-      font-size: 16px;
+      font-size: 16.5px;
     }}
     .meta {{
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 22px;
     }}
-    .pill {{
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 5px 10px;
+    header.hero .pill {{
+      border-color: rgba(255, 255, 255, .3);
+      background: rgba(255, 255, 255, .1);
+      color: #eaf6fa;
+    }}
+    header.hero a.pill:hover {{
+      background: rgba(255, 255, 255, .24);
+    }}
+    .stats {{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: -48px;
+    }}
+    .stat {{
       background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }}
+    .stat .num {{
+      font-size: 28px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }}
+    .stat .num.sm {{
+      font-size: 19px;
+      padding: 6px 0 3px;
+    }}
+    .stat .lbl {{
       color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-top: 2px;
     }}
-    main {{
-      padding: 26px 0 42px;
-    }}
-    section {{
-      margin-top: 28px;
-    }}
-    h2 {{
-      margin: 0 0 12px;
-      font-size: 20px;
-      letter-spacing: 0;
-    }}
+    main {{ padding: 0 0 48px; }}
+    section {{ margin-top: 30px; }}
+    h2 {{ margin: 0 0 10px; font-size: 21px; letter-spacing: -0.01em; }}
     .status {{
-      border-left: 4px solid var(--accent);
-      background: var(--accent-soft);
-      padding: 12px 14px;
-      margin: 0 0 20px;
-      font-weight: 700;
+      border-left: 4px solid var(--good);
+      background: var(--good-soft);
+      border-radius: 0 10px 10px 0;
+      padding: 12px 16px;
+      margin: 26px 0 0;
+      font-weight: 650;
     }}
     .status.empty {{
       border-left-color: var(--warn);
       background: var(--warn-soft);
     }}
-    .table-wrap {{
-      overflow-x: auto;
-      background: var(--panel);
-      border: 1px solid var(--line);
-    }}
-    table {{
-      width: 100%;
-      min-width: 980px;
-      border-collapse: collapse;
-      font-size: 14px;
-    }}
-    th, td {{
-      border-bottom: 1px solid var(--line);
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }}
-    th {{
-      background: #eeeeea;
-      font-size: 12px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }}
-    tr:last-child td {{ border-bottom: 0; }}
-    a {{ color: var(--accent); }}
     .calendar-link {{
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 6px;
       font-size: 12px;
       white-space: nowrap;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 10px;
+      background: var(--panel-2);
+      text-decoration: none;
     }}
+    .calendar-link:hover {{ border-color: var(--accent); }}
     .muted {{ color: var(--muted); }}
     .notes {{
       background: var(--panel);
       border: 1px solid var(--line);
-      padding: 14px 18px;
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
     }}
+    .notes ul {{ margin: 8px 0 0; padding-left: 20px; }}
     .filters {{
       display: grid;
       grid-template-columns: repeat(6, minmax(120px, 1fr));
       gap: 12px;
-      margin: 18px 0 22px;
-      padding: 14px;
+      margin: 18px 0 4px;
+      padding: 16px;
       background: var(--panel);
       border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
     }}
-    .filter-group {{
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }}
+    .filter-group {{ display: flex; flex-direction: column; gap: 5px; }}
     label {{
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11.5px;
       text-transform: uppercase;
+      letter-spacing: .06em;
       font-weight: 700;
     }}
     select, input[type="search"] {{
       width: 100%;
-      min-height: 34px;
+      min-height: 36px;
       border: 1px solid var(--line);
-      background: #fff;
+      border-radius: 8px;
+      background: var(--panel-2);
       color: var(--ink);
-      padding: 6px 8px;
+      padding: 6px 10px;
       font: inherit;
+    }}
+    select:focus, input[type="search"]:focus {{
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+      border-color: var(--accent);
     }}
     .count {{
       align-self: end;
       color: var(--muted);
       font-size: 13px;
-      padding-bottom: 7px;
+      padding-bottom: 8px;
     }}
-    .notes ul {{
-      margin: 8px 0 0;
-      padding-left: 20px;
-    }}
-    footer {{
-      color: var(--muted);
-      font-size: 13px;
-      padding: 18px 0 34px;
-    }}
-    @media (max-width: 720px) {{
-      h1 {{ font-size: 26px; }}
-      .wrap {{ width: min(100vw - 22px, 1180px); }}
+    footer {{ color: var(--muted); font-size: 13px; padding: 22px 0 40px; }}
+    @media (max-width: 860px) {{
+      .stats {{ grid-template-columns: 1fr 1fr; }}
       .filters {{ grid-template-columns: 1fr 1fr; }}
       table {{ font-size: 13px; }}
     }}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap top">
+  <header class="hero">
+    <div class="wrap">
+      <p class="kicker">&#128225; Updated daily &middot; Free &amp; open source</p>
       <h1>Research Seasonal School Radar</h1>
       <p class="subtitle">A free daily scan of research summer schools, winter schools, training schools, field schools, doctoral schools, and short courses in water, climate, geoscience, remote sensing, AI, and scientific machine learning.</p>
       <div class="meta">
@@ -250,10 +338,17 @@ def render_site(
         <a class="pill" href="candidates.json">JSON data</a>
         <a class="pill" href="curated.json">Curated data</a>
         <a class="pill" href="sources.html">Sources &amp; Coverage</a>
+        <a class="pill" href="https://github.com/lione12138/research-school-radar">GitHub</a>
       </div>
     </div>
   </header>
   <main class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="num">{len(curated)}</div><div class="lbl">Curated</div></div>
+      <div class="stat"><div class="num">{len(full)}</div><div class="lbl">Fully qualified</div></div>
+      <div class="stat"><div class="num">{len(near)}</div><div class="lbl">Still-open near-matches</div></div>
+      <div class="stat"><div class="num sm">{updated}</div><div class="lbl">Last updated</div></div>
+    </div>
     <p class="status{' empty' if not full else ''}">{escape(status)}</p>
     {filters}
     {_curated_section(curated_rows) if curated else _empty_curated_section()}
@@ -261,7 +356,7 @@ def render_site(
     {near_block}
     {_notes_section(notes) if notes else ""}
   </main>
-  <footer class="wrap">Near-matches are not treated as qualified opportunities. Detailed screening data remains available in candidates.json.</footer>
+  <footer class="wrap">Near-matches are not treated as qualified opportunities. Detailed screening data remains available in <a href="candidates.json">candidates.json</a>. Maintained openly on <a href="https://github.com/lione12138/research-school-radar">GitHub</a>.</footer>
   {_filter_script()}
   {analytics}
 </body>
@@ -280,67 +375,29 @@ def render_sources_page(sources: list[dict[str, Any]]) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sources & Coverage - Research Seasonal School Radar</title>
   <style>
-    body {{
-      margin: 0;
-      background: #f7f7f4;
-      color: #202124;
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.5;
+{_THEME_CSS}
+    header.hero {{
+      background: linear-gradient(135deg, var(--hero-1), var(--hero-2) 55%, var(--hero-3));
+      color: #f3f9fc;
+      padding: 36px 0 40px;
     }}
-    .wrap {{
-      width: min(1180px, calc(100vw - 32px));
-      margin: 0 auto;
-      padding: 28px 0 44px;
-    }}
-    header {{
-      border-bottom: 1px solid #d7d9d2;
-      background: #fff;
-    }}
-    h1 {{ margin: 0 0 8px; font-size: 30px; }}
-    h2 {{ margin-top: 28px; font-size: 20px; }}
-    p {{ color: #5f6368; }}
-    a {{ color: #176b87; }}
-    .pill {{
-      display: inline-flex;
-      border: 1px solid #d7d9d2;
-      border-radius: 999px;
-      padding: 5px 10px;
+    h1 {{ margin: 0 0 8px; font-size: clamp(26px, 4vw, 34px); letter-spacing: -0.02em; }}
+    h2 {{ margin: 30px 0 10px; font-size: 21px; letter-spacing: -0.01em; }}
+    header.hero p {{ max-width: 860px; color: rgba(243, 249, 252, .85); margin: 0 0 6px; }}
+    header.hero .pill {{
+      border-color: rgba(255, 255, 255, .3);
+      background: rgba(255, 255, 255, .1);
+      color: #eaf6fa;
       margin: 8px 8px 0 0;
-      background: #fff;
-      color: #5f6368;
-      font-size: 13px;
-      text-decoration: none;
     }}
-    .table-wrap {{
-      overflow-x: auto;
-      background: #fff;
-      border: 1px solid #d7d9d2;
-    }}
-    table {{
-      width: 100%;
-      min-width: 980px;
-      border-collapse: collapse;
-      font-size: 14px;
-    }}
-    th, td {{
-      border-bottom: 1px solid #d7d9d2;
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }}
-    th {{
-      background: #eeeeea;
-      color: #5f6368;
-      font-size: 12px;
-      text-transform: uppercase;
-    }}
-    tr:last-child td {{ border-bottom: 0; }}
-    .status-enabled {{ color: #176b3a; font-weight: 700; }}
-    .status-disabled {{ color: #8a5a00; font-weight: 700; }}
+    header.hero a.pill:hover {{ background: rgba(255, 255, 255, .24); }}
+    main {{ padding: 0 0 48px; }}
+    .status-enabled {{ color: var(--good); font-weight: 700; }}
+    .status-disabled {{ color: var(--warn); font-weight: 700; }}
   </style>
 </head>
 <body>
-  <header>
+  <header class="hero">
     <div class="wrap">
       <h1>Sources &amp; Coverage</h1>
       <p>The radar scans a trusted source registry rather than crawling the open web. This page lists the configured sources, including disabled sources kept for transparency.</p>

@@ -26,10 +26,10 @@ _Last scan: 2026-06-12 · 0 fully qualified · 5 still-open near-matches shown_
 | title | type | organizer | location | duration | deadline | funding / fee | topic |
 |---|---|---|---|---|---|---|---|
 | [EGU - Meetings - Training schools](https://www.egu.eu/meetings/training-schools/) | summer school | EGU Training Schools | Europe | uncertain | uncertain | travel grant, financial support · amount not stated · Apply on official page | climate extremes, geoscience, disaster risk |
+| ["Advances in the Science and Applications of SAR Interferometry” – Fringe 2026 - eo science for society](https://eo4society.esa.int/event/fringe-2026-advances-in-the-science-and-applications-of-sar-interferometry-and-sentinel-1-insar/) | summer school | ESA EO4Society Training | Jagiellonian University of Kraków, ul. Krupnicza 33, 31-123 Kraków | uncertain | uncertain | financial support · amount not stated · Apply on official page | hydrology, remote sensing, disaster risk, AI |
+| [Course Funding - Helmholtz Information & Data Science Academy](https://www.helmholtz-hida.de/en/training/course-funding/) | summer school | HIDA Events | Europe | uncertain | uncertain | financial support · amount not stated · Apply on official page | AI |
 | [Glacial Lake Outburst Flood Risk Assessment Field Workshop](https://www.icimod.org/event/cryosphere-and-water/glacial-lake-outburst-flood-risk-assessment-field-workshop/) | workshop | ICIMOD | Drang Drung Glacier, Zanskar, India | 15 days | uncertain | Funding or fee not stated | water resources, disaster risk |
-| [51st biannual research and training workshop](https://www.icimod.org/event/regional-action/51st-biannual-research-and-training-workshop/) | capacity building | ICIMOD | Kathmandu, Nepal | 6 days | uncertain | Funding or fee not stated | water resources, disaster risk |
-| [Events \| European Laboratory for Learning and Intelligent Systems](https://ellis.eu/events) | summer school | ELLIS | Europe | uncertain | uncertain | Funding or fee not stated | AI |
-| [EGU - Science communication workshop series](https://www.egu.eu/outreach/scws/) | training school | EGU Training Schools | Europe | uncertain | uncertain | Funding or fee not stated | geoscience |
+| [Application](https://www.eeml.eu/previous-editions/eeml2025/application) | summer school | EEML | EEML2022 | uncertain | uncertain | travel grant, financial support · amount not stated · Apply on official page | uncertain |
 
 <!-- radar:results:end -->
 

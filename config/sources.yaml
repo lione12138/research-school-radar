@@ -105,3 +105,109 @@ sources:
     keywords: [water, climate, training, short course]
     scan_frequency: every_run
     notes: Regional university source.
+  - name: ECMWF Training
+    url: https://www.ecmwf.int/en/learning/training
+    layer: 1
+    region: UK
+    source_type: agency
+    keywords: [climate, weather, machine learning, training]
+    scan_frequency: every_run
+    notes: European Centre for Medium-Range Weather Forecasts training catalogue. Many courses are online; in-person ones surface as candidates.
+  - name: ESA EO4Society Training
+    url: https://eo4society.esa.int/training-education/
+    layer: 1
+    region: continental Europe
+    source_type: agency
+    keywords: [remote sensing, earth observation, training, school]
+    scan_frequency: every_run
+    notes: European Space Agency Earth observation training and education.
+  - name: NCAR ASP Colloquia
+    url: https://asp.ucar.edu/asp-colloquia
+    layer: 1.5
+    region: North America
+    source_type: research_institute
+    keywords: [climate, atmospheric science, summer colloquium]
+    scan_frequency: every_run
+    notes: NCAR Advanced Study Program summer colloquia, usually funded for early-career researchers.
+  - name: PIK Potsdam Events
+    url: https://www.pik-potsdam.de/en/news/events
+    layer: 1.5
+    region: continental Europe
+    source_type: research_institute
+    keywords: [climate, climate impacts, school, workshop]
+    scan_frequency: every_run
+    notes: Potsdam Institute for Climate Impact Research events.
+  - name: HIDA Events
+    url: https://www.helmholtz-hida.de/en/events/
+    layer: 1.5
+    region: continental Europe
+    source_type: research_network
+    keywords: [data science, AI, machine learning, school]
+    scan_frequency: every_run
+    notes: Helmholtz Information and Data Science Academy events, including schools for environmental data science.
+  - name: MLSS Index
+    url: http://mlss.cc/
+    layer: 1
+    region: global
+    source_type: community_index
+    keywords: [machine learning, summer school]
+    scan_frequency: every_run
+    notes: Canonical index of Machine Learning Summer Schools worldwide.
+  - name: EEML
+    url: https://www.eeml.eu/
+    layer: 2
+    region: continental Europe
+    source_type: summer_school
+    keywords: [machine learning, AI, summer school]
+    scan_frequency: every_run
+    notes: Eastern European Machine Learning Summer School.
+  - name: Mediterranean ML Summer School
+    url: https://www.m2lschool.org/
+    layer: 2
+    region: continental Europe
+    source_type: summer_school
+    keywords: [machine learning, AI, summer school]
+    scan_frequency: every_run
+    notes: M2L summer school on machine learning.
+  - name: Nordic ProbAI
+    url: https://probabilistic.ai/
+    layer: 2
+    region: continental Europe
+    source_type: summer_school
+    keywords: [machine learning, probabilistic AI, summer school]
+    scan_frequency: every_run
+    notes: Nordic Probabilistic AI School.
+  - name: Gaussian Process Summer School
+    url: https://gpss.cc/
+    layer: 2
+    region: UK
+    source_type: summer_school
+    keywords: [machine learning, Gaussian processes, summer school]
+    scan_frequency: every_run
+    notes: Sheffield Gaussian Process Summer School, relevant to uncertainty quantification.
+  - name: Deep Learning Indaba
+    url: https://deeplearningindaba.com/
+    layer: 2
+    region: Africa
+    source_type: summer_school
+    keywords: [machine learning, AI, summer school]
+    scan_frequency: every_run
+    notes: Pan-African deep learning summer school with travel support.
+  - name: ICTP
+    url: https://www.ictp.it/scientific-calendar
+    layer: 1
+    region: continental Europe
+    source_type: research_institute
+    keywords: [climate, physics, AI, school, workshop]
+    scan_frequency: every_run
+    enabled: false
+    notes: Highly relevant (Abdus Salam ICTP runs many funded schools) but the site returns 404 for scripted requests on every known listing path. Re-enable when a stable public listing or feed is found.
+  - name: LxMLS
+    url: https://lxmls.it.pt/
+    layer: 2
+    region: continental Europe
+    source_type: summer_school
+    keywords: [machine learning, natural language processing, summer school]
+    scan_frequency: every_run
+    enabled: false
+    notes: Lisbon Machine Learning School. Connection times out for scripted requests; re-enable when reachable.
