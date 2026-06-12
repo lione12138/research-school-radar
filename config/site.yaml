@@ -1,0 +1,12 @@
+analytics:
+  # Options: none, cloudflare, goatcounter
+  provider: none
+
+  # Cloudflare Web Analytics:
+  # 1. Add this GitHub Pages hostname in Cloudflare Web Analytics.
+  # 2. Copy the token from the Cloudflare JS snippet into cloudflare_token.
+  cloudflare_token: ""
+
+  # GoatCounter:
+  # If your dashboard is https://example.goatcounter.com, set goatcounter_code to example.
+  goatcounter_code: ""

@@ -1,0 +1,65 @@
+preferred_topics:
+  - hydrology
+  - hydrogeology
+  - water resources
+  - climate extremes
+  - environmental modelling
+  - remote sensing
+  - geoscience
+  - disaster risk
+  - AI
+  - scientific machine learning
+  - uncertainty quantification
+
+hard_filters:
+  minimum_duration_days: 8
+  require_funding_or_low_fee: true
+  allow_online_only: false
+  require_open_deadline: true
+
+# Fixed, approximate reference rates keep the scanner free and API-key-free.
+# They intentionally slightly overestimate EUR cost to reduce false inclusions.
+financial_access:
+  maximum_unfunded_fee_eur: 400
+  approximate_currency_to_eur:
+    EUR: 1.0
+    USD: 0.95
+    GBP: 1.20
+    CHF: 1.10
+    CNY: 0.13
+    JPY: 0.006
+    INR: 0.0115
+    KRW: 0.00068
+    SGD: 0.72
+    AUD: 0.62
+    CAD: 0.70
+
+priority_regions:
+  - UK
+  - continental Europe
+  - East Asia
+  - Southeast Asia
+
+supplementary_regions:
+  - North America
+  - Australia and New Zealand
+  - South Asia
+  - Middle East
+  - Africa
+  - Latin America
+
+excluded_programme_types:
+  - pure language course
+  - undergraduate-only
+  - tourism-oriented
+  - business-only
+  - high-fee without funding
+  - PhD degree programme
+  - doctoral admission
+  - PhD position
+  - full-time doctoral programme
+  - graduate school enrollment
+
+doctoral_school_scope:
+  include: short-term doctoral schools, PhD schools, and graduate training schools when they are seasonal research training opportunities
+  exclude: PhD admissions, PhD positions, full-time degree programmes, and ordinary graduate school enrollment

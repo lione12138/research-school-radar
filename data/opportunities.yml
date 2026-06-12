@@ -1,0 +1,29 @@
+# Curated opportunities confirmed by maintainers.
+#
+# Keep this file for high-confidence records only. Scanner output belongs in
+# reports/ and site/candidates.json until it has been reviewed.
+#
+# Schema:
+# opportunities:
+#   - title: Example Hydrology Winter School
+#     type: winter school
+#     organizer: Example Institute
+#     url: https://example.org
+#     location: Germany
+#     region: continental Europe
+#     mode: in-person
+#     start_date: 2027-01-10
+#     end_date: 2027-01-20
+#     duration_days: 11
+#     application_deadline: 2026-10-15
+#     funding:
+#       available: true
+#       type: [travel grant, tuition waiver]
+#       evidence: Travel grants are available for selected participants.
+#     fee: 300 EUR
+#     fee_eur: 300
+#     topics: [hydrology, climate, environmental modelling]
+#     eligibility: MSc, PhD, early-career researchers
+#     status: confirmed
+#     notes: Funding is competitive.
+opportunities: []

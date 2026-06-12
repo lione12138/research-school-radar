@@ -1,0 +1,20 @@
+queries:
+  topic:
+    - '"summer school" hydrology scholarship application open'
+    - '"winter school" hydrology scholarship application open'
+    - '"training school" water resources travel grant application open'
+    - '"field school" hydrology climate scholarship'
+    - '"doctoral school" environmental modelling funding'
+    - '"short course" hydrogeology travel grant'
+    - '"seasonal school" climate AI scholarship in person'
+    - '"remote sensing" "training school" "travel grant"'
+    - '"capacity building" climate water scholarship'
+    - '"scientific machine learning" climate school scholarship'
+    - '"geoscience" "winter school" "travel grant"'
+    - '"hydrogeology" "training school" scholarship'
+    - '"climate extremes" "doctoral school" funding'
+  region:
+    - '"East Asia" hydrology summer school scholarship'
+    - '"Southeast Asia" climate water training scholarship'
+    - '"Himalayan hydrology" training school scholarship'
+    - '"Mekong" water resources training scholarship'

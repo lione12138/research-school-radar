@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+
+# Test and tooling caches
+.pytest_cache/
+.coverage
+
+# Generated artifacts (rebuilt on every scan)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+site/
+
+# Local tooling
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,107 @@
+sources:
+  - name: EGU Training Schools
+    url: https://www.egu.eu/meetings/training-schools/
+    layer: 1
+    region: continental Europe
+    source_type: scientific_society
+    keywords: [geoscience, hydrology, climate, training school]
+    scan_frequency: every_run
+    notes: Core geoscience training source.
+  - name: IAHS
+    url: https://iahs.info/
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [hydrology, water resources, training]
+    scan_frequency: every_run
+    notes: International Association of Hydrological Sciences.
+  - name: IAH
+    url: https://iah.org/
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [hydrogeology, groundwater, training]
+    scan_frequency: every_run
+    notes: International Association of Hydrogeologists.
+  - name: CUAHSI
+    url: https://www.cuahsi.org/workshops
+    layer: 1
+    region: North America
+    source_type: research_network
+    keywords: [hydrology, water, short course]
+    scan_frequency: every_run
+    notes: Hydrology workshops and training. Previous /education URL returned 404.
+  - name: NASA ARSET
+    url: https://appliedsciences.nasa.gov/what-we-do/capacity-building/arset
+    layer: 1
+    region: global
+    source_type: agency
+    keywords: [remote sensing, water, climate, training]
+    scan_frequency: every_run
+    notes: Often online, so many records will be near-matches only.
+  - name: DAAD Short Courses
+    url: https://www.daad.de/en/study-and-research-in-germany/scholarships/daad-scholarships/
+    layer: 1
+    region: continental Europe
+    source_type: funding_body
+    keywords: [short course, scholarship, Germany]
+    scan_frequency: every_run
+    notes: Funding source; opportunity pages may be linked elsewhere.
+  - name: ELLIS
+    url: https://ellis.eu/events
+    layer: 1
+    region: continental Europe
+    source_type: research_network
+    keywords: [AI, machine learning, summer school]
+    scan_frequency: every_run
+    notes: AI and scientific ML events.
+  - name: IHE Delft
+    url: https://www.un-ihe.org/short-courses
+    layer: 1
+    region: continental Europe
+    source_type: university_institute
+    keywords: [water, hydrology, short course, scholarship]
+    scan_frequency: every_run
+    notes: Water education source.
+  - name: IIASA
+    url: https://iiasa.ac.at/events
+    layer: 1.5
+    region: continental Europe
+    source_type: research_institute
+    keywords: [climate, systems, summer school]
+    scan_frequency: every_run
+    enabled: false
+    notes: Strong-relevance research institute, but the site currently returns Cloudflare 403 for scripted requests including robots.txt and sitemap.xml. Re-enable when a stable public feed or non-blocked page is available.
+  - name: GFZ Potsdam
+    url: https://www.gfz-potsdam.de/en/events
+    layer: 1.5
+    region: continental Europe
+    source_type: research_institute
+    keywords: [geoscience, training, school]
+    scan_frequency: every_run
+    notes: Strong geoscience relevance.
+  - name: UKCEH
+    url: https://www.ceh.ac.uk/filtered-training-listing
+    layer: 1.5
+    region: UK
+    source_type: research_institute
+    keywords: [hydrology, ecology, environmental science, training]
+    scan_frequency: every_run
+    notes: UK environmental science training listing. Previous /training redirected to a 403 page.
+  - name: ICIMOD
+    url: https://www.icimod.org/events/
+    layer: 1.5
+    region: South Asia
+    source_type: intergovernmental_research
+    keywords: [Himalayan, climate, water, capacity building]
+    scan_frequency: every_run
+    blocked_link_domains: [servir.icimod.org]
+    notes: Strong regional water and climate relevance. SERVIR subdomain is skipped because local TLS certificate validation fails.
+  - name: Asian Institute of Technology
+    url: https://ait.ac.th/events/
+    layer: 2
+    region: Southeast Asia
+    source_type: university
+    keywords: [water, climate, training, short course]
+    scan_frequency: every_run
+    notes: Regional university source.

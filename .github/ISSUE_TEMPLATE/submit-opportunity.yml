@@ -1,0 +1,112 @@
+name: Submit a research training opportunity
+description: Suggest a summer school, winter school, field school, doctoral school, short course, or training workshop.
+title: "[Opportunity]: "
+labels:
+  - opportunity-submission
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an opportunity. Please provide source links for deadline, funding, duration, and mode whenever possible.
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Official programme title.
+      placeholder: Example Hydrology Winter School
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Official URL
+      description: Link to the official opportunity page.
+      placeholder: https://example.org/school
+    validations:
+      required: true
+  - type: input
+    id: organizer
+    attributes:
+      label: Organizer
+      placeholder: Example Institute
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Opportunity type
+      options:
+        - summer school
+        - winter school
+        - seasonal school
+        - training school
+        - doctoral school
+        - field school
+        - short course
+        - advanced course
+        - workshop
+        - capacity-building programme
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      placeholder: City, country
+    validations:
+      required: true
+  - type: input
+    id: dates
+    attributes:
+      label: Dates and duration
+      placeholder: 2027-01-10 to 2027-01-20, 11 days
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Application deadline
+      placeholder: 2026-10-15
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - in-person
+        - hybrid
+        - online
+        - uncertain
+    validations:
+      required: true
+  - type: textarea
+    id: funding
+    attributes:
+      label: Funding evidence
+      description: Quote or summarize scholarship, travel grant, tuition waiver, stipend, accommodation support, or other financial support.
+      placeholder: Travel grants are available for selected participants.
+    validations:
+      required: true
+  - type: textarea
+    id: topics
+    attributes:
+      label: Topic fit
+      description: Relevant topics such as hydrology, hydrogeology, water resources, climate, remote sensing, geoscience, disaster risk, AI, scientific ML.
+      placeholder: hydrology, climate extremes, environmental modelling
+    validations:
+      required: true
+  - type: textarea
+    id: eligibility
+    attributes:
+      label: Eligibility / target level
+      placeholder: MSc, PhD, postdoc, early-career researchers
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes or risks
+      description: Mention uncertainty, high fees, competitive funding, or missing evidence.
+    validations:
+      required: false
