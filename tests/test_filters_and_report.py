@@ -178,6 +178,50 @@ def _page(text: str, *, html: str = "", title: str = "Test School") -> Page:
     return Page(url=source.url, title=title, text=text, html=html, source=source, fetched_at=date.today())
 
 
+def test_icimod_adapter_reads_structured_block() -> None:
+    source = Source(
+        name="ICIMOD",
+        url="https://www.icimod.org/event/cryosphere/field-school/",
+        layer="1.5",
+        region="South Asia",
+        source_type="research_institute",
+    )
+    page = Page(
+        url=source.url,
+        title="Cryosphere Field School",
+        text=(
+            "Cryosphere Field School. Training school. "
+            "Venue Drang Drung Glacier, Zanskar, India Date & Time 01 July 2027 to 15 July 2027 Contact Example Person. "
+            "ICIMOD will cover all direct costs related to the workshop, including international airfare and accommodation. "
+            "Topics include water resources and disaster risk. "
+            "Funding and acknowledgements This fieldwork is organised by ICIMOD with support from a research grant."
+        ),
+        html="",
+        source=source,
+        fetched_at=date.today(),
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.start_date == date(2027, 7, 1)
+    assert candidate.end_date == date(2027, 7, 15)
+    assert candidate.location == "Drang Drung Glacier, Zanskar, India"
+    assert candidate.funding_available is True
+    assert candidate.funding_type == ["organiser-covered costs"]
+    assert candidate.fee == ""
+
+
+def test_organiser_covered_costs_are_not_a_fee() -> None:
+    page = _page(
+        "Hydrology summer school. In-person residential training. "
+        "Dates: 1 July 2027 to 12 July 2027. Application deadline: 1 March 2027. "
+        "The organiser covers all costs related to participation. Topics include hydrology."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.fee == ""
+    assert candidate.fee_eur is None
+
+
 def test_listing_page_without_dates_is_dropped() -> None:
     # A navigation/listing page mentions programme and application terms but has
     # no concrete date range or deadline, so it must not become a candidate.

@@ -5,6 +5,7 @@ from datetime import date
 
 from dateutil import parser as date_parser
 
+from .adapters import adapter_for
 from .models import Candidate, Page, Source
 from .parse import OPPORTUNITY_TERMS, has_programme_signal, is_excluded_programme
 from .utils import clean_space, evidence_window, first_match
@@ -61,8 +62,13 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         return None
 
     text = page.text
-    start, end = _extract_dates(text)
-    deadline = _extract_deadline(text)
+    overrides = adapter_for(page.url)(page) if adapter_for(page.url) else {}
+
+    start = overrides.get("start_date")
+    end = overrides.get("end_date")
+    if start is None and end is None:
+        start, end = _extract_dates(text)
+    deadline = overrides.get("deadline") or _extract_deadline(text)
     # An individual opportunity must expose at least one concrete time signal.
     # Listing, navigation, and funding-scheme index pages have neither a date
     # range nor a deadline, and could never satisfy the duration or open-deadline
@@ -73,9 +79,13 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
     preferred_topics = profile.get("preferred_topics", [])
     topics = [topic for topic in preferred_topics if _topic_in_text(topic, text)]
     programme_type = _programme_type(text)
-    funding_types = [
-        label for label, pattern in FUNDING_PATTERNS.items() if _funding_is_offered(text, pattern)
-    ]
+    if "funding_type" in overrides:
+        funding_types = overrides["funding_type"]
+    else:
+        funding_types = [
+            label for label, pattern in FUNDING_PATTERNS.items() if _funding_is_offered(text, pattern)
+        ]
+    funding_available = overrides.get("funding_available", True if funding_types else None)
     funding_evidence = evidence_window(text, r"scholarship|travel grant|tuition waiver|stipend|financial support|funding")
     mode = _extract_mode(text)
     title = _extract_title(page)
@@ -91,6 +101,7 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         ],
     )
     fee = _extract_fee(text)
+    location = overrides.get("location") or _extract_location(page.html, text, page.source.region)
 
     return Candidate(
         title=title,
@@ -98,14 +109,14 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         organizer=page.source.name,
         source_layer=str(page.source.layer),
         region_priority=_region_priority(page.source.region, profile),
-        location=_extract_location(page.html, text, page.source.region),
+        location=location,
         mode=mode,
         start_date=start,
         end_date=end,
         duration_days=_duration_days(start, end),
         deadline=deadline,
         deadline_status=_deadline_status(deadline),
-        funding_available=True if funding_types else None,
+        funding_available=funding_available,
         funding_type=funding_types,
         funding_evidence=funding_evidence,
         topic_keywords=topics,
@@ -163,13 +174,19 @@ def _extract_fee(text: str) -> str:
     )
     if free:
         return free
-    return first_match(
+    paid = first_match(
         text,
         [
             r"\b(?:registration fees?|participation fees?|tuition fees?|course fees?|fees?|costs?)\b[:\s-]+([^.;\n]{1,100})",
             r"((?:(?:EUR|USD|GBP|CHF|CNY|RMB|JPY|INR|KRW|SGD|AUD|CAD)|[€$£])\s?\d[\d ,.]*\d\s+(?:registration|participation|tuition|course)?\s*(?:fees?|costs?))",
         ],
     )
+    # A real participant fee always carries an amount. A digitless match such as
+    # "costs related to the workshop are covered" is organiser-covered funding,
+    # not a fee, so it must not be reported as one.
+    if paid and not re.search(r"\d", paid):
+        return ""
+    return paid
 
 
 def _fee_to_eur(fee: str, profile: dict) -> float | None:
