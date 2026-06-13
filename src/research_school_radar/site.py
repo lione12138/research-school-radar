@@ -168,9 +168,9 @@ def render_site(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Research Seasonal School Radar</title>
-  <meta name="description" content="A free daily radar for funded research summer schools, winter schools, and training schools in water, climate, hydrology, geoscience, remote sensing, AI, and scientific machine learning.">
+  <meta name="description" content="A free daily radar for funded research summer schools, winter schools, and training schools across all academic disciplines - kept high quality by strict filters on deadline, duration, funding, and in-person delivery.">
   <meta property="og:title" content="Research Seasonal School Radar">
-  <meta property="og:description" content="Daily scan of trusted academic sources for funded research training opportunities, with hard filters and visible evidence.">
+  <meta property="og:description" content="Daily scan of trusted academic sources for funded summer schools across all disciplines, with hard filters and visible evidence.">
   <meta property="og:type" content="website">
   <style>
 {_THEME_CSS}
@@ -330,7 +330,7 @@ def render_site(
     <div class="wrap">
       <p class="kicker">&#128225; Updated daily &middot; Free &amp; open source</p>
       <h1>Research Seasonal School Radar</h1>
-      <p class="subtitle">A free daily scan of research summer schools, winter schools, training schools, field schools, doctoral schools, and short courses in water, climate, geoscience, remote sensing, AI, and scientific machine learning.</p>
+      <p class="subtitle">A free daily scan of research summer schools, winter schools, training schools, field schools, doctoral schools, and short courses across all academic disciplines. Strict filters keep only funded or low-fee, in-person opportunities with an open deadline.</p>
       <div class="meta">
         <span class="pill">Updated {updated}</span>
         <span class="pill">Fixed-source scan</span>

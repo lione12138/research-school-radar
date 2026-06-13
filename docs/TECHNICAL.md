@@ -61,12 +61,7 @@ This repository now contains a working MVP:
 
 ## What It Looks For
 
-The default profile targets MSc, PhD, postdoc, and early-career research opportunities related to:
-
-- hydrology, hydrogeology, and water resources
-- climate, climate extremes, and environmental modelling
-- remote sensing, geoscience, and disaster risk
-- AI, scientific machine learning, and uncertainty quantification
+The default profile targets MSc, PhD, postdoc, and early-career research opportunities across all academic disciplines — from water, climate, and geoscience through computing, physics, life sciences, engineering, and the social sciences and humanities. The `preferred_topics` list in `config/profile.yaml` is a broad discipline vocabulary: it is a relevance gate that blocks non-academic noise (tourism, language-only, marketing), not a subject restriction. Narrowing the project back to a single field is just a matter of trimming that list.
 
 An opportunity is treated as fully qualified only when all hard conditions are satisfied:
 

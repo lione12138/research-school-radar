@@ -4,9 +4,9 @@
 [![Daily scan](https://github.com/lione12138/research-school-radar/actions/workflows/scheduled_scan.yml/badge.svg)](https://github.com/lione12138/research-school-radar/actions/workflows/scheduled_scan.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An open-source radar for research seasonal training opportunities in water, climate, hydrology, geoscience, remote sensing, AI, and scientific machine learning.
+An open-source radar for funded research seasonal training opportunities — summer schools, winter schools, and training schools — across all academic disciplines.
 
-It monitors trusted academic sources, extracts deadline/funding/fee/duration evidence, separates fully qualified opportunities from near-matches, and publishes a static website that updates daily for free on GitHub Pages.
+It monitors trusted academic sources, extracts deadline/funding/fee/duration evidence, separates fully qualified opportunities from near-matches, and publishes a static website that updates daily for free on GitHub Pages. Quality is enforced by strict hard filters (open deadline, at least 8 days, funded or low fee, in-person), not by limiting the subject area.
 
 **Live site:** <https://lione12138.github.io/research-school-radar/>
 
@@ -25,11 +25,11 @@ _Last scan: 2026-06-13 · 0 fully qualified · 5 still-open near-matches shown_
 
 | title | type | organizer | location | duration | deadline | funding / fee | topic |
 |---|---|---|---|---|---|---|---|
-| [EGU - Meetings - Training schools](https://www.egu.eu/meetings/training-schools/) | summer school | EGU Training Schools | Europe | uncertain | uncertain | travel grant, financial support · amount not stated · Apply on official page | climate extremes, geoscience, disaster risk |
-| ["Advances in the Science and Applications of SAR Interferometry” – Fringe 2026 - eo science for society](https://eo4society.esa.int/event/fringe-2026-advances-in-the-science-and-applications-of-sar-interferometry-and-sentinel-1-insar/) | summer school | ESA EO4Society Training | Jagiellonian University of Kraków, ul. Krupnicza 33, 31-123 Kraków | uncertain | uncertain | financial support · amount not stated · Apply on official page | hydrology, remote sensing, disaster risk, AI |
-| [Course Funding - Helmholtz Information & Data Science Academy](https://www.helmholtz-hida.de/en/training/course-funding/) | summer school | HIDA Events | Europe | uncertain | uncertain | financial support · amount not stated · Apply on official page | AI |
-| [Glacial Lake Outburst Flood Risk Assessment Field Workshop](https://www.icimod.org/event/cryosphere-and-water/glacial-lake-outburst-flood-risk-assessment-field-workshop/) | workshop | ICIMOD | Drang Drung Glacier, Zanskar, India | 15 days | uncertain | Funding or fee not stated | water resources, disaster risk |
-| [Application](https://www.eeml.eu/previous-editions/eeml2025/application) | summer school | EEML | EEML2022 | uncertain | uncertain | travel grant, financial support · amount not stated · Apply on official page | uncertain |
+| [EGU - Meetings - Training schools](https://www.egu.eu/meetings/training-schools/) | summer school | EGU Training Schools | Europe | uncertain | uncertain | travel grant, financial support · amount not stated · Apply on official page | water, climate, climate extremes, geoscience, geology, geophysics, seismology, atmospheric science, glaciology, biodiversity, energy, disaster risk, mathematics, physics, chemistry, evolution, education |
+| [Course Funding - Helmholtz Information & Data Science Academy](https://www.helmholtz-hida.de/en/training/course-funding/) | summer school | HIDA Events | Europe | uncertain | uncertain | financial support · amount not stated · Apply on official page | AI, data science, finance, education |
+| ["Advances in the Science and Applications of SAR Interferometry” – Fringe 2026 - eo science for society](https://eo4society.esa.int/event/fringe-2026-advances-in-the-science-and-applications-of-sar-interferometry-and-sentinel-1-insar/) | summer school | ESA EO4Society Training | Jagiellonian University of Kraków, ul. Krupnicza 33, 31-123 Kraków | uncertain | uncertain | financial support · amount not stated · Apply on official page | hydrology, water, climate, remote sensing, earth observation, atmospheric science, disaster risk, agriculture, forestry, AI, machine learning, finance, education |
+| [Glacial Lake Outburst Flood Risk Assessment Field Workshop](https://www.icimod.org/event/cryosphere-and-water/glacial-lake-outburst-flood-risk-assessment-field-workshop/) | workshop | ICIMOD | Drang Drung Glacier, Zanskar, India | 15 days | uncertain | Funding or fee not stated | water resources, water, climate, biodiversity, energy, renewable energy, disaster risk, economics, history |
+| [Home](https://www.m2lschool.org/) | summer school | Mediterranean ML Summer School | Europe | uncertain | uncertain | scholarship · amount not stated · Apply on official page | AI, machine learning, deep learning, robotics, computer vision, natural language processing, neuroscience, evolution, education |
 
 <!-- radar:results:end -->
 
@@ -63,7 +63,7 @@ An opportunity must satisfy all hard conditions:
 | Duration | At least 8 days |
 | Financial access | Explicit funding is available, or the confirmed total fee is no more than approximately EUR 400 |
 | Mode | In-person or substantially on-site, not online-only |
-| Topic | Relevant to water, hydrology, hydrogeology, climate, environmental modelling, remote sensing, geoscience, disaster risk, AI, or scientific ML |
+| Topic | Recognizably academic (matches a known research discipline), which blocks non-academic noise such as tourism or language-only programmes |
 
 Near-matches are never presented as qualified results.
 

@@ -1,15 +1,117 @@
+# Topic keywords gate academic relevance: a candidate must match at least
+# one of these to qualify. The list is deliberately broad so high-quality
+# funded summer schools across all disciplines can qualify, while the gate
+# still blocks non-academic noise (tourism, language-only, marketing).
+# The hard quality filters (deadline, duration, funding/fee, in-person)
+# are unchanged and apply identically to every discipline.
 preferred_topics:
+  # Water, climate, and earth (original core domain)
   - hydrology
   - hydrogeology
   - water resources
+  - water
+  - climate
   - climate extremes
   - environmental modelling
+  - environmental science
   - remote sensing
+  - earth observation
   - geoscience
+  - geology
+  - geophysics
+  - seismology
+  - oceanography
+  - atmospheric science
+  - meteorology
+  - glaciology
+  - ecology
+  - biodiversity
+  - sustainability
+  - energy
+  - renewable energy
   - disaster risk
-  - AI
-  - scientific machine learning
+  - soil science
+  - agriculture
+  - forestry
   - uncertainty quantification
+  # Computing, mathematics, and AI
+  - AI
+  - machine learning
+  - deep learning
+  - scientific machine learning
+  - data science
+  - statistics
+  - mathematics
+  - computer science
+  - robotics
+  - computer vision
+  - natural language processing
+  - high performance computing
+  - quantum computing
+  - cybersecurity
+  - bioinformatics
+  - optimization
+  - network science
+  # Physics, chemistry, and materials
+  - physics
+  - astrophysics
+  - astronomy
+  - cosmology
+  - quantum
+  - particle physics
+  - condensed matter
+  - photonics
+  - optics
+  - plasma
+  - chemistry
+  - materials science
+  - nanotechnology
+  - catalysis
+  # Life sciences and health
+  - biology
+  - molecular biology
+  - genomics
+  - genetics
+  - neuroscience
+  - biotechnology
+  - microbiology
+  - evolution
+  - immunology
+  - biomedical
+  - medicine
+  - public health
+  - epidemiology
+  - global health
+  - pharmacology
+  # Engineering
+  - engineering
+  - mechanical engineering
+  - electrical engineering
+  - civil engineering
+  - aerospace
+  - biomedical engineering
+  # Social sciences and humanities
+  - economics
+  - finance
+  - political science
+  - sociology
+  - psychology
+  - anthropology
+  - demography
+  - international relations
+  - public policy
+  - development studies
+  - human rights
+  - law
+  - philosophy
+  - linguistics
+  - education
+  - history
+  - archaeology
+  - digital humanities
+  - gender studies
+  - migration
+  - urban studies
 
 hard_filters:
   minimum_duration_days: 8

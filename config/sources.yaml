@@ -313,6 +313,22 @@ sources:
     keywords: [geoscience, geology, short course]
     scan_frequency: every_run
     notes: Geological Society of America. Direct event-list path 404s for scripted requests; homepage links current events.
+  - name: Summer Schools in Europe
+    url: https://www.summerschoolsineurope.eu/
+    layer: 2
+    region: continental Europe
+    source_type: aggregator
+    keywords: [summer school, multidisciplinary]
+    scan_frequency: every_run
+    notes: Cross-disciplinary aggregator of European summer schools; the hard filters keep only funded or low-fee, in-person, open-deadline records.
+  - name: Utrecht Summer School
+    url: https://utrechtsummerschool.nl/courses
+    layer: 2
+    region: continental Europe
+    source_type: university
+    keywords: [summer school, multidisciplinary]
+    scan_frequency: every_run
+    notes: One of Europe's largest summer school programmes; most courses charge fees, so many records surface as near-matches unless funding is explicit.
   - name: ICTP
     url: https://www.ictp.it/scientific-calendar
     layer: 1
