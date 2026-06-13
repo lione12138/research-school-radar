@@ -193,6 +193,126 @@ sources:
     keywords: [machine learning, AI, summer school]
     scan_frequency: every_run
     notes: Pan-African deep learning summer school with travel support.
+  - name: IWA
+    url: https://www.iwa-network.org/events/
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [water, wastewater, water resources, training]
+    scan_frequency: every_run
+    notes: International Water Association events and conferences.
+  - name: IAHR
+    url: https://www.iahr.org/index/events
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [hydraulics, hydro-environment, water resources, training]
+    scan_frequency: every_run
+    notes: International Association for Hydro-Environment Engineering and Research.
+  - name: SIWI
+    url: https://siwi.org/event
+    layer: 1.5
+    region: continental Europe
+    source_type: research_institute
+    keywords: [water, water governance, training]
+    scan_frequency: every_run
+    notes: Stockholm International Water Institute events.
+  - name: GEWEX
+    url: https://www.gewex.org/event/
+    layer: 1.5
+    region: global
+    source_type: research_network
+    keywords: [climate, water cycle, energy, training]
+    scan_frequency: every_run
+    notes: Global Energy and Water Exchanges programme of the World Climate Research Programme.
+  - name: AMS Meetings
+    url: https://www.ametsoc.org/ams/meetings-events/
+    layer: 1
+    region: North America
+    source_type: scientific_society
+    keywords: [atmospheric science, climate, weather, short course]
+    scan_frequency: every_run
+    notes: American Meteorological Society meetings and short courses.
+  - name: WCRP
+    url: https://www.wcrp-climate.org/
+    layer: 1
+    region: global
+    source_type: research_network
+    keywords: [climate, climate research, training, school]
+    scan_frequency: every_run
+    notes: World Climate Research Programme. The /events path 404s; the homepage links current activities.
+  - name: WMO ETRP
+    url: https://etrp.wmo.int/
+    layer: 1
+    region: global
+    source_type: agency
+    keywords: [meteorology, hydrology, climate, training]
+    scan_frequency: every_run
+    notes: World Meteorological Organization Education and Training Programme.
+  - name: GFDL Events
+    url: https://www.gfdl.noaa.gov/events/
+    layer: 2
+    region: North America
+    source_type: research_institute
+    keywords: [climate modelling, geophysical fluid dynamics, training]
+    scan_frequency: every_run
+    notes: NOAA Geophysical Fluid Dynamics Laboratory events.
+  - name: Urbino Summer School
+    url: https://www.urbinossp.it/
+    layer: 2
+    region: continental Europe
+    source_type: summer_school
+    keywords: [paleoclimatology, climate, summer school]
+    scan_frequency: every_run
+    notes: Urbino Summer School in Paleoclimatology.
+  - name: CIDER
+    url: https://www.deep-earth.org/
+    layer: 2
+    region: North America
+    source_type: summer_school
+    keywords: [geoscience, deep earth, geophysics, summer school]
+    scan_frequency: every_run
+    notes: Cooperative Institute for Dynamic Earth Research summer programme.
+  - name: Oxford ML Summer School
+    url: https://www.oxfordml.school/
+    layer: 2
+    region: UK
+    source_type: summer_school
+    keywords: [machine learning, AI, health, finance, summer school]
+    scan_frequency: every_run
+    notes: OxML summer school on machine learning across application tracks.
+  - name: AMMI
+    url: https://aimsammi.org/
+    layer: 2
+    region: Africa
+    source_type: summer_school
+    keywords: [machine learning, AI, summer school]
+    scan_frequency: every_run
+    notes: African Master of Machine Intelligence, fully funded programme.
+  - name: IEEE GRSS
+    url: https://www.grss-ieee.org/events-calendar/
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [remote sensing, geoscience, earth observation, summer school]
+    scan_frequency: every_run
+    notes: IEEE Geoscience and Remote Sensing Society events calendar.
+  - name: ISPRS
+    url: https://www.isprs.org/
+    layer: 1
+    region: global
+    source_type: scientific_society
+    keywords: [remote sensing, photogrammetry, geoinformation, summer school]
+    scan_frequency: every_run
+    notes: International Society for Photogrammetry and Remote Sensing. Calendar path 404s; homepage links current activities.
+  - name: GSA
+    url: https://www.geosociety.org/
+    layer: 1
+    region: North America
+    source_type: scientific_society
+    keywords: [geoscience, geology, short course]
+    scan_frequency: every_run
+    notes: Geological Society of America. Direct event-list path 404s for scripted requests; homepage links current events.
   - name: ICTP
     url: https://www.ictp.it/scientific-calendar
     layer: 1
