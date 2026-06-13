@@ -9,7 +9,7 @@ from typing import Any
 from urllib.parse import quote
 
 from .models import Candidate
-from .utils import topics_label
+from .utils import format_duration, topics_label
 
 
 # Shared base styles for all generated pages. Interpolated into f-string
@@ -578,7 +578,7 @@ def _public_location(value: str) -> str:
 
 
 def _duration(candidate: Candidate) -> str:
-    return f"{candidate.duration_days} days" if candidate.duration_days else "uncertain"
+    return format_duration(candidate.start_date, candidate.end_date, candidate.duration_days)
 
 
 def _deadline_cell(deadline: date | None, title: str, url: str) -> str:
@@ -784,8 +784,12 @@ def _curated_link(item: dict[str, Any]) -> str:
 
 
 def _curated_duration(item: dict[str, Any]) -> str:
-    duration = item.get("duration_days")
-    return f"{duration} days" if duration else "uncertain"
+    days = item.get("duration_days")
+    return format_duration(
+        _parse_iso_date(item.get("start_date")),
+        _parse_iso_date(item.get("end_date")),
+        int(days) if isinstance(days, (int, float)) else None,
+    )
 
 
 def _list_value(value: Any) -> list[str]:

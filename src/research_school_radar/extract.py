@@ -37,6 +37,10 @@ GENERIC_TITLES = {
     "apply", "register", "registration", "read more", "skip to main content",
 }
 
+# Substrings that mark a title as a section, archive, or navigation label
+# rather than a single opportunity.
+_SECTION_TITLE_WORDS = ("navigation", "archive", "search results")
+
 ONLINE_ONLY_PATTERNS = [r"online-only", r"fully online", r"online course", r"webinar"]
 IN_PERSON_PATTERNS = [r"in[- ]person", r"on[- ]site", r"residential", r"field school", r"venue", r"hosted in"]
 SUPPORTED_FEE_CURRENCIES = {
@@ -64,16 +68,17 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
     text = page.text
     overrides = adapter_for(page.url)(page) if adapter_for(page.url) else {}
 
-    start = overrides.get("start_date")
-    end = overrides.get("end_date")
-    if start is None and end is None:
-        start, end = _extract_dates(text)
+    ranges = _date_ranges(text)
+    adapter_dates = overrides.get("start_date") is not None
+    start = overrides.get("start_date") or (ranges[0][0] if ranges else None)
+    end = overrides.get("end_date") or (ranges[0][1] if ranges else None)
     deadline = overrides.get("deadline") or _extract_deadline(text)
-    # An individual opportunity must expose at least one concrete time signal.
-    # Listing, navigation, and funding-scheme index pages have neither a date
-    # range nor a deadline, and could never satisfy the duration or open-deadline
-    # hard conditions, so they are dropped here instead of polluting the results.
-    if deadline is None and start is None:
+
+    # Drop listing, calendar, and navigation pages. A single opportunity has one
+    # clear date range or a governing deadline. No time signal at all, or several
+    # event ranges with no deadline (a calendar), means it is not one opportunity.
+    range_count = 1 if adapter_dates else len(ranges)
+    if deadline is None and range_count != 1:
         return None
 
     preferred_topics = profile.get("preferred_topics", [])
@@ -283,7 +288,9 @@ def _extract_title(page: Page) -> str:
     raw_candidates.append(page.title or "")
     for raw in raw_candidates:
         title = _clean_title(raw)
-        if title and title.lower() not in GENERIC_TITLES and len(title) >= 6:
+        lowered = title.lower()
+        is_section = any(word in lowered for word in _SECTION_TITLE_WORDS)
+        if title and lowered not in GENERIC_TITLES and not is_section and len(title) >= 6:
             return title
     return ""
 
@@ -300,21 +307,61 @@ def _clean_title(value: str) -> str:
     return value
 
 
+def _safe_parse_date(value: str) -> date | None:
+    try:
+        return date_parser.parse(value, dayfirst=True).date()
+    except (ValueError, OverflowError):
+        return None
+
+
+_SEP = r"(?:to|-|–|—|until|through)"
+
+# Ranges where both endpoints carry their own month and year.
+_EXPLICIT_RANGE_PATTERNS = [
+    rf"(\d{{1,2}}\s+[A-Z][a-z]+\s+20\d{{2}})\s*{_SEP}\s*(\d{{1,2}}\s+[A-Z][a-z]+\s+20\d{{2}})",
+    rf"([A-Z][a-z]+\s+\d{{1,2}},?\s+20\d{{2}})\s*{_SEP}\s*([A-Z][a-z]+\s+\d{{1,2}},?\s+20\d{{2}})",
+    rf"(20\d{{2}}-\d{{2}}-\d{{2}})\s*{_SEP}\s*(20\d{{2}}-\d{{2}}-\d{{2}})",
+]
+
+# Compact ranges that share a month and/or year, e.g. "June 9-14, 2025",
+# "9-14 June 2025", or "June 9 – June 14, 2025".
+_COMPACT_RANGE_PATTERNS = [
+    (
+        rf"([A-Z][a-z]+\s+\d{{1,2}}|\d{{1,2}}\s+[A-Z][a-z]+)\s*{_SEP}\s*"
+        rf"([A-Z][a-z]+\s+\d{{1,2}}|\d{{1,2}}\s+[A-Z][a-z]+),?\s+(20\d{{2}})",
+        lambda m: (f"{m.group(1)} {m.group(3)}", f"{m.group(2)} {m.group(3)}"),
+    ),
+    (
+        rf"([A-Z][a-z]+)\s+(\d{{1,2}})\s*{_SEP}\s*(\d{{1,2}}),?\s+(20\d{{2}})",
+        lambda m: (f"{m.group(2)} {m.group(1)} {m.group(4)}", f"{m.group(3)} {m.group(1)} {m.group(4)}"),
+    ),
+    (
+        rf"(\d{{1,2}})\s*{_SEP}\s*(\d{{1,2}})\s+([A-Z][a-z]+)\s+(20\d{{2}})",
+        lambda m: (f"{m.group(1)} {m.group(3)} {m.group(4)}", f"{m.group(2)} {m.group(3)} {m.group(4)}"),
+    ),
+]
+
+
+def _date_ranges(text: str) -> list[tuple[date, date]]:
+    """All distinct (start, end) ranges on the page, in pattern-priority order."""
+    ranges: list[tuple[date, date]] = []
+    for pattern in _EXPLICIT_RANGE_PATTERNS:
+        for match in re.finditer(pattern, text):
+            start, end = _safe_parse_date(match.group(1)), _safe_parse_date(match.group(2))
+            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in ranges:
+                ranges.append((start, end))
+    for pattern, build in _COMPACT_RANGE_PATTERNS:
+        for match in re.finditer(pattern, text):
+            start_str, end_str = build(match)
+            start, end = _safe_parse_date(start_str), _safe_parse_date(end_str)
+            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in ranges:
+                ranges.append((start, end))
+    return ranges
+
+
 def _extract_dates(text: str) -> tuple[date | None, date | None]:
-    patterns = [
-        r"(\d{1,2}\s+[A-Z][a-z]+\s+20\d{2})\s*(?:to|-|–|until)\s*(\d{1,2}\s+[A-Z][a-z]+\s+20\d{2})",
-        r"([A-Z][a-z]+\s+\d{1,2},?\s+20\d{2})\s*(?:to|-|–|until)\s*([A-Z][a-z]+\s+\d{1,2},?\s+20\d{2})",
-        r"(20\d{2}-\d{2}-\d{2})\s*(?:to|-|–|until)\s*(20\d{2}-\d{2}-\d{2})",
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, text)
-        if not match:
-            continue
-        try:
-            return date_parser.parse(match.group(1), dayfirst=True).date(), date_parser.parse(match.group(2), dayfirst=True).date()
-        except (ValueError, OverflowError):
-            continue
-    return None, None
+    ranges = _date_ranges(text)
+    return ranges[0] if ranges else (None, None)
 
 
 def _extract_deadline(text: str) -> date | None:

@@ -247,6 +247,27 @@ def test_listing_page_with_only_generic_title_is_dropped() -> None:
     assert extract_candidate(page, PROFILE) is None
 
 
+def test_calendar_page_with_many_ranges_is_dropped() -> None:
+    # Several event date ranges and no governing deadline marks a calendar.
+    page = _page(
+        "Upcoming events. Hydrology school 1 July 2027 to 12 July 2027. "
+        "Climate workshop 3 August 2027 to 14 August 2027. "
+        "Remote sensing course 5 September 2027 to 16 September 2027.",
+        title="Hydrology Events",
+    )
+    assert extract_candidate(page, PROFILE) is None
+
+
+def test_navigation_title_is_dropped() -> None:
+    page = _page(
+        "Main navigation. Hydrology training school 1 July 2027 to 12 July 2027. "
+        "Topics include hydrology.",
+        html="<html><head><title>Main navigation</title></head><body><h1>Main navigation</h1></body></html>",
+        title="Main navigation",
+    )
+    assert extract_candidate(page, PROFILE) is None
+
+
 def test_negated_funding_is_not_treated_as_available() -> None:
     page = _page(
         "Hydrology summer school. In-person residential training. "
@@ -258,6 +279,40 @@ def test_negated_funding_is_not_treated_as_available() -> None:
     assert candidate is not None
     assert candidate.funding_available is not True
     assert candidate.funding_type == []
+
+
+def test_compact_same_month_date_range_is_parsed() -> None:
+    page = _page(
+        "Mathematics summer school. In-person training. "
+        "The school runs June 9-14, 2027 in Italy. Application deadline: 1 March 2027. "
+        "Topics include mathematics."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.start_date == date(2027, 6, 9)
+    assert candidate.end_date == date(2027, 6, 14)
+
+
+def test_compact_day_range_before_month_is_parsed() -> None:
+    page = _page(
+        "Physics summer school. In-person training. "
+        "Dates: 9-20 July 2027. Application deadline: 1 March 2027. Topics include physics."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.start_date == date(2027, 7, 9)
+    assert candidate.end_date == date(2027, 7, 20)
+
+
+def test_shared_year_range_is_parsed() -> None:
+    page = _page(
+        "Climate summer school. In-person training. "
+        "Held June 9 – June 20, 2027. Application deadline: 1 March 2027. Topics include climate."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.start_date == date(2027, 6, 9)
+    assert candidate.end_date == date(2027, 6, 20)
 
 
 def test_deadline_with_filler_words_is_extracted() -> None:
@@ -665,6 +720,20 @@ def test_curated_past_deadline_is_marked_closed(tmp_path) -> None:
     ranked = rank_candidates([candidate])
     html = write_site(ranked, [], tmp_path, curated=curated).read_text(encoding="utf-8")
     assert 'data-status="curated" data-region="unclassified" data-funding="unresolved" data-deadline="closed"' in html
+
+
+def test_duration_shows_date_range_and_days(tmp_path) -> None:
+    candidate = apply_hard_filters(sample_candidate(PROFILE), PROFILE)
+    ranked = rank_candidates([candidate])
+    start = candidate.start_date
+    end = candidate.end_date
+    expected = (
+        f"{start.day} {start.strftime('%b')} – {end.day} {end.strftime('%b')} {end.year} · 11 days"
+    )
+    html = write_site(ranked, [], tmp_path).read_text(encoding="utf-8")
+    assert expected in html
+    markdown = render_report(ranked, [])
+    assert expected in markdown
 
 
 def test_topic_display_is_capped_at_four_terms(tmp_path) -> None:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,32 @@ def evidence_window(text: str, pattern: str, radius: int = 120) -> str:
 def topics_label(keywords: list[str], limit: int = 4) -> str:
     """Join topic keywords for table display, capped to at most `limit` terms."""
     return ", ".join(keywords[:limit])
+
+
+def _format_day(value: date, with_year: bool = True) -> str:
+    # Built manually to stay cross-platform (Windows strftime lacks %-d).
+    text = f"{value.day} {value.strftime('%b')}"
+    return f"{text} {value.year}" if with_year else text
+
+
+def format_date_range(start: date | None, end: date | None) -> str:
+    """Human date range, e.g. "1 Jul – 12 Jul 2027" or "" when no start is known."""
+    if start is None:
+        return ""
+    if end is None or end == start:
+        return _format_day(start)
+    if start.year == end.year:
+        return f"{_format_day(start, with_year=False)} – {_format_day(end)}"
+    return f"{_format_day(start)} – {_format_day(end)}"
+
+
+def format_duration(start: date | None, end: date | None, days: int | None) -> str:
+    """Combine the date range and day count, e.g. "1 Jul – 12 Jul 2027 · 12 days"."""
+    range_text = format_date_range(start, end)
+    days_text = f"{days} days" if days else ""
+    if range_text and days_text:
+        return f"{range_text} · {days_text}"
+    return range_text or days_text or "uncertain"
 
 
 def first_match(text: str, patterns: list[str]) -> str:

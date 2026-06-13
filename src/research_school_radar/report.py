@@ -4,7 +4,7 @@ from datetime import date
 from pathlib import Path
 
 from .models import Candidate
-from .utils import topics_label
+from .utils import format_duration, topics_label
 
 
 README_START = "<!-- radar:results:start -->"
@@ -137,7 +137,7 @@ def _near_table(candidates: list[Candidate]) -> list[str]:
 
 
 def _duration(candidate: Candidate) -> str:
-    return f"{candidate.duration_days} days" if candidate.duration_days else "uncertain"
+    return format_duration(candidate.start_date, candidate.end_date, candidate.duration_days)
 
 
 def _cell(value: str) -> str:
