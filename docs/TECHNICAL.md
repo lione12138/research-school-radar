@@ -367,8 +367,8 @@ Useful outputs:
 The current implementation is useful but still early.
 
 - Extraction is rule-based, so unusual page layouts can produce uncertain fields.
-- Dates and deadlines are only parsed from common English date formats, including compact ranges that share a month or year (e.g. "June 9-14, 2025", "9-14 July 2027"). Deadlines tolerate filler words between the keyword and the date (e.g. "deadline was extended until 8 March 2026").
-- Funding detection now suppresses negated statements (e.g. "no financial support is foreseen") to avoid false positives, but unusual phrasing can still slip through.
+- Dates and deadlines share one date parser, which understands ISO (`2026-03-08`), day-first (`8 March 2026`, `1st March 2026`), month-first (`March 8, 2026`), abbreviated months (`15 Jan 2026`), numeric (`8/3/2026`, `08.03.2026`), and compact ranges that share a month or year (`June 9-14, 2025`, `9-14 July 2027`). Deadlines tolerate filler words between the keyword and the date (e.g. "deadline was extended until 8 March 2026"). Month-only dates ("March 2026") are intentionally treated as uncertain.
+- Funding detection covers grants, scholarships, bursaries, qualified fellowships, tuition and fee waivers, stipends, and covered accommodation/board/lodging/meals/travel, and suppresses negated statements (e.g. "no financial support is foreseen"). Ambiguous wording such as a bare "fellowship" (which can mean a membership grade) requires an availability cue, but unusual phrasing can still slip through.
 - Fixed exchange rates require occasional maintenance and intentionally trade precision for a free, deterministic workflow.
 - Listing, calendar, navigation, and landing pages are filtered out: a candidate must have either a deadline or exactly one event date range (several ranges without a deadline indicates a calendar) and a non-generic, non-section title; pure language courses (CEFR level transitions) and degree recruitment are also excluded. Genuine opportunities with no machine-readable date can therefore be missed until their details are published.
 - No curator UI exists yet; `data/opportunities.yml` is edited manually.

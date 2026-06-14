@@ -298,6 +298,18 @@ def test_calendar_page_with_many_ranges_is_dropped() -> None:
     assert extract_candidate(page, PROFILE) is None
 
 
+def test_calendar_with_deadline_is_still_dropped() -> None:
+    # A calendar page (>=3 ranges) must be dropped even if it quotes a deadline.
+    page = _page(
+        "Past workshops. Hydrology school 1 July 2027 to 12 July 2027. "
+        "Climate course 3 August 2027 to 14 August 2027. "
+        "Remote sensing school 5 September 2027 to 16 September 2027. "
+        "Application deadline: 1 March 2027.",
+        title="Past Workshops",
+    )
+    assert extract_candidate(page, PROFILE) is None
+
+
 def test_navigation_title_is_dropped() -> None:
     page = _page(
         "Main navigation. Hydrology training school 1 July 2027 to 12 July 2027. "
@@ -353,6 +365,36 @@ def test_shared_year_range_is_parsed() -> None:
     assert candidate is not None
     assert candidate.start_date == date(2027, 6, 9)
     assert candidate.end_date == date(2027, 6, 20)
+
+
+def test_iso_deadline_is_not_misparsed_as_day_first() -> None:
+    # Regression: "2026-03-08" must be 8 March, not 3 August.
+    from research_school_radar.extract import _extract_deadline
+
+    assert _extract_deadline("Application deadline: 2026-03-08.") == date(2026, 3, 8)
+
+
+def test_deadline_accepts_ordinal_and_numeric_formats() -> None:
+    from research_school_radar.extract import _extract_deadline
+
+    assert _extract_deadline("Apply by 1st March 2026.") == date(2026, 3, 1)
+    assert _extract_deadline("Deadline: 8/3/2026.") == date(2026, 3, 8)
+    assert _extract_deadline("Applications close on 15 Jan 2026.") == date(2026, 1, 15)
+
+
+def test_funding_detects_bursary_fellowship_and_board() -> None:
+    from research_school_radar.extract import FUNDING_PATTERNS, _funding_is_offered
+
+    def labels(text: str) -> set[str]:
+        return {label for label, pat in FUNDING_PATTERNS.items() if _funding_is_offered(text, pat)}
+
+    assert "bursary" in labels("Bursaries are available to cover travel.")
+    assert "fellowship" in labels("The school offers fellowships to participants.")
+    assert "fee waiver" in labels("A fee waiver is available on request.")
+    assert "accommodation support" in labels("We will cover board and lodging for participants.")
+    assert "accommodation support" in labels("Accommodation and meals are provided free of charge.")
+    # Negated funding is still suppressed.
+    assert labels("No funding or scholarships are available.") == set()
 
 
 def test_deadline_with_filler_words_is_extracted() -> None:

@@ -13,12 +13,33 @@ from .utils import clean_space, evidence_window, first_match
 
 
 FUNDING_PATTERNS = {
-    "travel grant": r"travel grant[s]?",
+    "travel grant": (
+        r"travel grant[s]?|travel bursar(?:y|ies)|travel support"
+        r"|travel costs?[^.\n]{0,20}(?:covered|reimbursed)"
+        r"|covers?[^.\n]{0,20}(?:travel costs?|airfare|flights?)"
+    ),
     "scholarship": r"scholarship[s]?",
+    "bursary": r"bursar(?:y|ies)",
+    # "fellowship" alone is ambiguous (membership grade such as "IEEE Fellow",
+    # or a separate research-fellowship job), so require a funding cue.
+    "fellowship": (
+        r"fellowship[s]?\s+(?:are|is)?\s*(?:available|offered|awarded|provided|on offer)"
+        r"|(?:travel|attendance|mobility|registration)\s+fellowship[s]?"
+        r"|(?:offers?|provides?|awards?|grant(?:s|ed)?)\s+(?:\w+\s+){0,2}fellowship[s]?"
+        r"|fellowship[s]?\s+(?:to|for)\s+(?:attend|participat)"
+    ),
     "tuition waiver": r"tuition waiver[s]?",
+    "fee waiver": r"fee waiver[s]?|registration (?:fee )?waiver|waived (?:registration|tuition) fee",
     "stipend": r"stipend[s]?",
-    "accommodation support": r"accommodation support|covered accommodation|accommodation is covered",
-    "financial support": r"financial support|funding available|support is available",
+    "accommodation support": (
+        r"accommodation support|covered accommodation|accommodation is covered|free accommodation"
+        r"|(?:accommodation|board and lodging|board|lodging|meals?)\s+(?:is|are|will be)?\s*(?:provided|covered|included)"
+        r"|covers?\s+(?:accommodation|board|lodging|subsistence|meals)"
+    ),
+    "financial support": (
+        r"financial support|funding (?:is )?available|support is available"
+        r"|fully funded|all costs?[^.\n]{0,15}covered"
+    ),
 }
 
 # Words that, immediately before a funding term, signal the opposite of an
@@ -89,10 +110,11 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
     deadline = overrides.get("deadline") or _extract_deadline(text)
 
     # Drop listing, calendar, and navigation pages. A single opportunity has one
-    # clear date range or a governing deadline. No time signal at all, or several
-    # event ranges with no deadline (a calendar), means it is not one opportunity.
+    # clear date range or a governing deadline. Three or more event ranges is a
+    # calendar even if it also quotes a deadline; and with no deadline at all only
+    # an exact single range looks like one opportunity.
     event_count = 1 if adapter_dates else max(len(ranges), len(jsonld))
-    if deadline is None and event_count != 1:
+    if event_count >= 3 or (deadline is None and event_count != 1):
         return None
 
     preferred_topics = profile.get("preferred_topics", [])
@@ -322,8 +344,19 @@ def _clean_title(value: str) -> str:
 
 
 def _safe_parse_date(value: str) -> date | None:
+    value = value.strip()
+    # ISO dates are year-first and must not be reinterpreted day-first
+    # (dateutil with dayfirst=True turns 2026-03-08 into 3 August).
+    iso = re.match(r"\d{4}-\d{2}-\d{2}", value)
+    if iso:
+        try:
+            return date.fromisoformat(iso.group(0))
+        except ValueError:
+            return None
+    # Strip ordinal suffixes so "1st March 2026" parses.
+    cleaned = re.sub(r"(\d{1,2})(?:st|nd|rd|th)\b", r"\1", value, flags=re.IGNORECASE)
     try:
-        return date_parser.parse(value, dayfirst=True).date()
+        return date_parser.parse(cleaned, dayfirst=True).date()
     except (ValueError, OverflowError):
         return None
 
@@ -478,21 +511,30 @@ def _jsonld_events(html: str) -> list[dict]:
     return events
 
 
+# A single date in any common form: "8 March 2026", "1st March 2026",
+# "March 8, 2026", "15 Jan 2026", "2026-03-08", "8/3/2026", "08.03.2026".
+_MONTH_NAME = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?"
+_DAY_NUM = r"\d{1,2}(?:st|nd|rd|th)?"
+_SINGLE_DATE = (
+    rf"(?:{_DAY_NUM}\s+{_MONTH_NAME}\s+20\d{{2}}"
+    rf"|{_MONTH_NAME}\s+{_DAY_NUM},?\s+20\d{{2}}"
+    rf"|20\d{{2}}-\d{{2}}-\d{{2}}"
+    rf"|\d{{1,2}}[./]\d{{1,2}}[./]20\d{{2}})"
+)
+
+
 def _extract_deadline(text: str) -> date | None:
     match = re.search(
         r"(?:application deadline|registration deadline|submission deadline|abstract deadline"
-        r"|deadline|apply by|applications?\s+close[sd]?|closing date)"
-        r"[^.\n]{0,40}?"
-        r"(\d{1,2}\s+[A-Z][a-z]+\s+20\d{2}|[A-Z][a-z]+\s+\d{1,2},?\s+20\d{2}|20\d{2}-\d{2}-\d{2})",
+        r"|deadline|apply by|apply before|applications?\s+(?:close[sd]?|are due|due)"
+        r"|closing date|last date)"
+        rf"[^.\n]{{0,40}}?({_SINGLE_DATE})",
         text,
         flags=re.IGNORECASE,
     )
     if not match:
         return None
-    try:
-        return date_parser.parse(match.group(1), dayfirst=True).date()
-    except (ValueError, OverflowError):
-        return None
+    return _safe_parse_date(match.group(1))
 
 
 def _deadline_status(deadline: date | None) -> str:
