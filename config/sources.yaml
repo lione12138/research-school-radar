@@ -320,7 +320,8 @@ sources:
     source_type: aggregator
     keywords: [summer school, multidisciplinary]
     scan_frequency: every_run
-    notes: Cross-disciplinary aggregator of European summer schools; the hard filters keep only funded or low-fee, in-person, open-deadline records.
+    enabled: false
+    notes: Cross-disciplinary aggregator. Disabled when the project refocused on water/climate/geoscience/remote-sensing/ML; it is mostly off-domain and also returns 403 for scripted requests.
   - name: Utrecht Summer School
     url: https://utrechtsummerschool.nl/courses
     layer: 2
@@ -328,7 +329,8 @@ sources:
     source_type: university
     keywords: [summer school, multidisciplinary]
     scan_frequency: every_run
-    notes: One of Europe's largest summer school programmes; most courses charge fees, so many records surface as near-matches unless funding is explicit.
+    enabled: false
+    notes: Large general summer school programme. Disabled when the project refocused on its core domain; most courses are off-domain and fee-based.
   - name: CERN Academic Training
     url: https://academictraining.cern.ch/
     layer: 1.5

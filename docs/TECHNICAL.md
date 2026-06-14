@@ -61,7 +61,7 @@ This repository now contains a working MVP:
 
 ## What It Looks For
 
-The default profile targets MSc, PhD, postdoc, and early-career research opportunities across all academic disciplines — from water, climate, and geoscience through computing, physics, life sciences, engineering, and the social sciences and humanities. The `preferred_topics` list in `config/profile.yaml` is a broad discipline vocabulary: it is a relevance gate that blocks non-academic noise (tourism, language-only, marketing), not a subject restriction. Narrowing the project back to a single field is just a matter of trimming that list.
+The default profile targets MSc, PhD, postdoc, and early-career research opportunities in the project's core domain: water and hydrology, climate and atmosphere, geoscience and earth observation, remote sensing, and scientific machine learning. The `preferred_topics` list in `config/profile.yaml` is the relevance gate; widening or narrowing the domain is a matter of editing that list, but the focused scope keeps the gate strong and the source registry tractable.
 
 An opportunity is treated as fully qualified only when all hard conditions are satisfied:
 

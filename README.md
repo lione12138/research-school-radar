@@ -4,9 +4,9 @@
 [![Daily scan](https://github.com/lione12138/research-school-radar/actions/workflows/scheduled_scan.yml/badge.svg)](https://github.com/lione12138/research-school-radar/actions/workflows/scheduled_scan.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An open-source radar for funded research seasonal training opportunities — summer schools, winter schools, and training schools — across all academic disciplines.
+An open-source scanner for funded research training opportunities — summer schools, winter schools, training schools, field schools, and short courses — in **water, climate, geoscience, remote sensing, and scientific machine learning**.
 
-It monitors trusted academic sources, extracts deadline/funding/fee/duration evidence, separates fully qualified opportunities from near-matches, and publishes a static website that updates daily for free on GitHub Pages. Quality is enforced by strict hard filters (open deadline, at least 8 days, funded or low fee, in-person), not by limiting the subject area.
+It is a fixed trusted-source scanner with rule-based extraction, a maintainer-curated layer, and transparent per-field evidence — not a fully automatic all-web radar. It scans a curated registry of trusted academic sources, extracts deadline / funding / fee / duration evidence together with the supporting text, separates fully qualified opportunities from near-matches, and publishes a static website that updates daily for free on GitHub Pages.
 
 **Live site:** <https://lione12138.github.io/research-school-radar/>
 
@@ -25,9 +25,9 @@ _Last scan: 2026-06-14 · 0 fully qualified · 3 still-open near-matches shown_
 
 | title | type | organizer | location | duration | deadline | funding / fee | topic |
 |---|---|---|---|---|---|---|---|
-| [2026 S2S Land-atmosphere Interactions Workshop](https://ncarprojects.ucar.edu/S2S-predictability/2026-s2s-land-atmosphere-interactions-workshop) | workshop | GEWEX | global | 4 Aug – 6 Aug 2026 · 3 days | uncertain | Funding or fee not stated | water resources, water, meteorology, agriculture |
-| [IEEE GRSS Summer School on UAS-Based GNSS-R Remote Sensing](https://www.grss-ieee.org/event/ieee-grss-summer-school-on-uas-based-gnss-r-remote-sensing/) | summer school | IEEE GRSS | University of Michigan, Ann Arbor, USA | 14 Jul – 16 Jul 2026 · 3 days | uncertain | Funding or fee not stated | water, climate, remote sensing, earth observation |
-| [Eastern European Machine Learning Summer School](https://www.eeml.eu/) | summer school | EEML | EEML2022 | 27 Jul – 1 Aug 2026 · 6 days | uncertain | Funding or fee not stated | AI, machine learning |
+| [2026 S2S Land-atmosphere Interactions Workshop](https://ncarprojects.ucar.edu/S2S-predictability/2026-s2s-land-atmosphere-interactions-workshop) | workshop | GEWEX | global | 4 Aug – 6 Aug 2026 · 3 days | uncertain | Funding or fee not stated | water resources, meteorology, artificial intelligence, uncertainty quantification |
+| [IEEE GRSS Summer School on UAS-Based GNSS-R Remote Sensing](https://www.grss-ieee.org/event/ieee-grss-summer-school-on-uas-based-gnss-r-remote-sensing/) | summer school | IEEE GRSS | University of Michigan, Ann Arbor, USA | 14 Jul – 16 Jul 2026 · 3 days | uncertain | Funding or fee not stated | climate, geoscience, remote sensing, earth observation |
+| [Eastern European Machine Learning Summer School](https://www.eeml.eu/) | summer school | EEML | EEML2022 | 27 Jul – 1 Aug 2026 · 6 days | uncertain | Funding or fee not stated | AI, artificial intelligence, machine learning |
 
 <!-- radar:results:end -->
 
@@ -61,7 +61,7 @@ An opportunity must satisfy all hard conditions:
 | Duration | At least 8 days |
 | Financial access | Explicit funding is available, or the confirmed total fee is no more than approximately EUR 400 |
 | Mode | In-person or substantially on-site, not online-only |
-| Topic | Recognizably academic (matches a known research discipline), which blocks non-academic noise such as tourism or language-only programmes |
+| Topic | Relevant to water, hydrology, climate, geoscience, remote sensing, environmental modelling, disaster risk, or scientific machine learning |
 
 Near-matches are never presented as qualified results.
 

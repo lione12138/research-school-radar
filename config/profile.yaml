@@ -1,117 +1,56 @@
-# Topic keywords gate academic relevance: a candidate must match at least
-# one of these to qualify. The list is deliberately broad so high-quality
-# funded summer schools across all disciplines can qualify, while the gate
-# still blocks non-academic noise (tourism, language-only, marketing).
-# The hard quality filters (deadline, duration, funding/fee, in-person)
-# are unchanged and apply identically to every discipline.
+# Topic keywords gate relevance: a candidate must match at least one of these
+# to qualify. The list is deliberately focused on the project's core domain —
+# water, climate, geoscience, remote sensing, and scientific machine learning —
+# so the relevance gate stays strong and the source registry is tractable. The
+# hard quality filters (deadline, duration, funding/fee, in-person) are separate.
 preferred_topics:
-  # Water, climate, and earth (original core domain)
+  # Water and hydrology
   - hydrology
   - hydrogeology
+  - groundwater
   - water resources
-  - water
+  - water quality
+  - water management
+  - flood
+  - drought
+  - hydrometeorology
+  # Climate and atmosphere
   - climate
+  - climate change
   - climate extremes
+  - climate modelling
   - environmental modelling
   - environmental science
-  - remote sensing
-  - earth observation
+  - meteorology
+  - atmospheric science
+  - oceanography
+  - glaciology
+  - cryosphere
+  # Geoscience and earth observation
   - geoscience
   - geology
   - geophysics
   - seismology
-  - oceanography
-  - atmospheric science
-  - meteorology
-  - glaciology
-  - ecology
-  - biodiversity
-  - sustainability
-  - energy
-  - renewable energy
-  - disaster risk
+  - geodesy
   - soil science
-  - agriculture
-  - forestry
-  - uncertainty quantification
-  # Computing, mathematics, and AI
+  - remote sensing
+  - earth observation
+  - satellite
+  - geospatial
+  - GIS
+  # Hazards and sustainability
+  - disaster risk
+  - natural hazards
+  - sustainability
+  - ecology
+  # AI and scientific machine learning
   - AI
+  - artificial intelligence
   - machine learning
   - deep learning
   - scientific machine learning
   - data science
-  - statistics
-  - mathematics
-  - computer science
-  - robotics
-  - computer vision
-  - natural language processing
-  - high performance computing
-  - quantum computing
-  - cybersecurity
-  - bioinformatics
-  - optimization
-  - network science
-  # Physics, chemistry, and materials
-  - physics
-  - astrophysics
-  - astronomy
-  - cosmology
-  - quantum
-  - particle physics
-  - condensed matter
-  - photonics
-  - optics
-  - plasma
-  - chemistry
-  - materials science
-  - nanotechnology
-  - catalysis
-  # Life sciences and health
-  - biology
-  - molecular biology
-  - genomics
-  - genetics
-  - neuroscience
-  - biotechnology
-  - microbiology
-  - evolution
-  - immunology
-  - biomedical
-  - medicine
-  - public health
-  - epidemiology
-  - global health
-  - pharmacology
-  # Engineering
-  - engineering
-  - mechanical engineering
-  - electrical engineering
-  - civil engineering
-  - aerospace
-  - biomedical engineering
-  # Social sciences and humanities
-  - economics
-  - finance
-  - political science
-  - sociology
-  - psychology
-  - anthropology
-  - demography
-  - international relations
-  - public policy
-  - development studies
-  - human rights
-  - law
-  - philosophy
-  - linguistics
-  - education
-  - history
-  - archaeology
-  - digital humanities
-  - gender studies
-  - migration
-  - urban studies
+  - uncertainty quantification
 
 hard_filters:
   minimum_duration_days: 8
