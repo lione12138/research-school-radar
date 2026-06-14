@@ -107,7 +107,10 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
     adapter_dates = overrides.get("start_date") is not None
     start = overrides.get("start_date") or (ranges[0][0] if ranges else None)
     end = overrides.get("end_date") or (ranges[0][1] if ranges else None)
-    deadline = overrides.get("deadline") or _extract_deadline(text)
+    duration_evidence = ranges[0][2] if ranges else str(overrides.get("duration_evidence", ""))
+    deadline_match = _find_deadline(text)
+    deadline = overrides.get("deadline") or (_safe_parse_date(deadline_match.group(1)) if deadline_match else None)
+    deadline_evidence = clean_space(deadline_match.group(0)) if deadline_match else ""
 
     # Drop listing, calendar, and navigation pages. A single opportunity has one
     # clear date range or a governing deadline. Three or more event ranges is a
@@ -142,7 +145,21 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         ],
     )
     fee = _extract_fee(text)
+    fee_eur = _fee_to_eur(fee, profile)
     location = overrides.get("location") or _extract_location(page.html, text, page.source.region)
+    duration_days = _duration_days(start, end)
+
+    # Transparent confidence: the fraction of the four high-risk fields that were
+    # resolved. It measures how sure we are of the extraction, not how good the
+    # opportunity is.
+    resolved = sum(
+        [
+            deadline is not None,
+            duration_days is not None,
+            funding_available is True or fee_eur is not None,
+            mode in {"in-person", "hybrid", "online"},
+        ]
+    )
 
     return Candidate(
         title=title,
@@ -154,7 +171,7 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         mode=mode,
         start_date=start,
         end_date=end,
-        duration_days=_duration_days(start, end),
+        duration_days=duration_days,
         deadline=deadline,
         deadline_status=_deadline_status(deadline),
         funding_available=funding_available,
@@ -164,12 +181,16 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         eligibility=eligibility,
         target_level=_target_level(text),
         fee=fee,
-        fee_eur=_fee_to_eur(fee, profile),
+        fee_eur=fee_eur,
         application_link=page.url,
         source_url=page.url,
         summary=_summary(text),
         recommendation_reason="",
         risk_points="",
+        deadline_evidence=deadline_evidence,
+        duration_evidence=duration_evidence,
+        mode_evidence=_mode_evidence(text),
+        extraction_confidence=round(resolved / 4, 2),
     )
 
 
@@ -389,26 +410,29 @@ _COMPACT_RANGE_PATTERNS = [
 ]
 
 
-def _date_ranges(text: str) -> list[tuple[date, date]]:
-    """All distinct (start, end) ranges on the page, in pattern-priority order."""
-    ranges: list[tuple[date, date]] = []
+def _date_ranges(text: str) -> list[tuple[date, date, str]]:
+    """Distinct (start, end, evidence) ranges, in pattern-priority order."""
+    ranges: list[tuple[date, date, str]] = []
+    seen: set[tuple[date, date]] = set()
     for pattern in _EXPLICIT_RANGE_PATTERNS:
         for match in re.finditer(pattern, text):
             start, end = _safe_parse_date(match.group(1)), _safe_parse_date(match.group(2))
-            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in ranges:
-                ranges.append((start, end))
+            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in seen:
+                seen.add((start, end))
+                ranges.append((start, end, clean_space(match.group(0))))
     for pattern, build in _COMPACT_RANGE_PATTERNS:
         for match in re.finditer(pattern, text):
             start_str, end_str = build(match)
             start, end = _safe_parse_date(start_str), _safe_parse_date(end_str)
-            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in ranges:
-                ranges.append((start, end))
+            if start and end and 0 <= (end - start).days <= 120 and (start, end) not in seen:
+                seen.add((start, end))
+                ranges.append((start, end, clean_space(match.group(0))))
     return ranges
 
 
 def _extract_dates(text: str) -> tuple[date | None, date | None]:
     ranges = _date_ranges(text)
-    return ranges[0] if ranges else (None, None)
+    return (ranges[0][0], ranges[0][1]) if ranges else (None, None)
 
 
 _JSONLD_EVENT_TYPES = {
@@ -523,18 +547,29 @@ _SINGLE_DATE = (
 )
 
 
+_DEADLINE_PATTERN = (
+    r"(?:application deadline|registration deadline|submission deadline|abstract deadline"
+    r"|deadline|apply by|apply before|applications?\s+(?:close[sd]?|are due|due)"
+    r"|closing date|last date)"
+    rf"[^.\n]{{0,40}}?({_SINGLE_DATE})"
+)
+
+
+def _find_deadline(text: str) -> "re.Match[str] | None":
+    return re.search(_DEADLINE_PATTERN, text, flags=re.IGNORECASE)
+
+
 def _extract_deadline(text: str) -> date | None:
-    match = re.search(
-        r"(?:application deadline|registration deadline|submission deadline|abstract deadline"
-        r"|deadline|apply by|apply before|applications?\s+(?:close[sd]?|are due|due)"
-        r"|closing date|last date)"
-        rf"[^.\n]{{0,40}}?({_SINGLE_DATE})",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if not match:
-        return None
-    return _safe_parse_date(match.group(1))
+    match = _find_deadline(text)
+    return _safe_parse_date(match.group(1)) if match else None
+
+
+def _mode_evidence(text: str) -> str:
+    for pattern in IN_PERSON_PATTERNS + ONLINE_ONLY_PATTERNS + [r"hybrid"]:
+        window = evidence_window(text, pattern, radius=50)
+        if window:
+            return window
+    return ""
 
 
 def _deadline_status(deadline: date | None) -> str:

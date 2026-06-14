@@ -290,6 +290,15 @@ def render_site(
       letter-spacing: .04em;
       vertical-align: middle;
     }}
+    .conf {{
+      margin-left: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: help;
+      vertical-align: middle;
+    }}
+    td[title], th[title] {{ cursor: help; }}
     .filters {{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -526,12 +535,12 @@ def _qualified_row(index: int, candidate: Candidate) -> str:
     return (
         f"<tr {_row_attrs(candidate)}>"
         f"<td>{index}</td>"
-        f"<td>{_link(candidate)}{_new_badge(candidate)}</td>"
+        f"<td>{_link(candidate)}{_new_badge(candidate)}{_confidence_badge(candidate)}</td>"
         f"<td>{escape(candidate.organizer)}</td>"
         f"<td>{escape(_public_location(candidate.location))}</td>"
-        f"<td>{escape(_duration(candidate))}</td>"
-        f"<td>{_deadline_cell(candidate.deadline, candidate.title, candidate.source_url)}</td>"
-        f"<td>{escape(candidate.financial_summary)}</td>"
+        f"<td{_evidence_attr(candidate.duration_evidence)}>{escape(_duration(candidate))}</td>"
+        f"<td{_evidence_attr(candidate.deadline_evidence)}>{_deadline_cell(candidate.deadline, candidate.title, candidate.source_url)}</td>"
+        f"<td{_evidence_attr(candidate.funding_evidence)}>{escape(candidate.financial_summary)}</td>"
         f"<td>{escape(topics_label(candidate.topic_keywords))}</td>"
         f"<td>{escape(candidate.recommendation_reason)}</td>"
         "</tr>"
@@ -560,12 +569,12 @@ def _curated_row(item: dict[str, Any]) -> str:
 def _near_row(candidate: Candidate) -> str:
     return (
         f"<tr {_row_attrs(candidate)}>"
-        f"<td>{_link(candidate)}{_new_badge(candidate)}</td>"
+        f"<td>{_link(candidate)}{_new_badge(candidate)}{_confidence_badge(candidate)}</td>"
         f"<td>{escape(candidate.organizer)}</td>"
         f"<td>{escape(_public_location(candidate.location))}</td>"
-        f"<td>{escape(_duration(candidate))}</td>"
-        f"<td>{_deadline_cell(candidate.deadline, candidate.title, candidate.source_url)}</td>"
-        f"<td>{escape(candidate.financial_summary)}</td>"
+        f"<td{_evidence_attr(candidate.duration_evidence)}>{escape(_duration(candidate))}</td>"
+        f"<td{_evidence_attr(candidate.deadline_evidence)}>{_deadline_cell(candidate.deadline, candidate.title, candidate.source_url)}</td>"
+        f"<td{_evidence_attr(candidate.funding_evidence)}>{escape(candidate.financial_summary)}</td>"
         f"<td>{escape(topics_label(candidate.topic_keywords) or 'uncertain')}</td>"
         "</tr>"
     )
@@ -577,6 +586,26 @@ def _link(candidate: Candidate) -> str:
 
 def _new_badge(candidate: Candidate) -> str:
     return ' <span class="badge-new">NEW</span>' if candidate.is_new else ""
+
+
+def _evidence_attr(evidence: str) -> str:
+    """A hover tooltip carrying the source text that produced a field."""
+    text = evidence.strip()
+    if not text:
+        return ""
+    if len(text) > 300:
+        text = text[:297].rstrip() + "..."
+    return f' title="{escape(text, quote=True)}"'
+
+
+def _confidence_badge(candidate: Candidate) -> str:
+    pct = round(candidate.extraction_confidence * 100)
+    resolved = round(candidate.extraction_confidence * 4)
+    tip = (
+        f"Extraction confidence: {resolved} of 4 core fields "
+        "(deadline, duration, funding/fee, mode) resolved from the source page."
+    )
+    return f' <span class="conf" title="{escape(tip, quote=True)}">{pct}%</span>'
 
 
 def _curated_financial_summary(item: dict[str, Any], funding: dict[str, Any]) -> str:
@@ -760,6 +789,7 @@ def _row_attrs(candidate: Candidate) -> str:
         "data-deadline": candidate.deadline_status,
         "data-topics": topics,
         "data-new": "true" if candidate.is_new else "false",
+        "data-confidence": str(candidate.extraction_confidence),
         "data-search": searchable,
     }
     return " ".join(f'{key}="{escape(value, quote=True)}"' for key, value in attrs.items())

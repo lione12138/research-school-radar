@@ -333,6 +333,43 @@ def test_negated_funding_is_not_treated_as_available() -> None:
     assert candidate.funding_type == []
 
 
+def test_evidence_and_confidence_are_captured() -> None:
+    page = _page(
+        "Hydrology summer school. In-person residential training. "
+        "Dates: 1 July 2027 to 12 July 2027. Application deadline: 1 March 2027. "
+        "Travel grants are available. Fee: 300 EUR. Topics include hydrology."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    # All four core fields resolved -> full confidence.
+    assert candidate.extraction_confidence == 1.0
+    assert "1 July 2027 to 12 July 2027" in candidate.duration_evidence
+    assert "1 March 2027" in candidate.deadline_evidence
+    assert "travel grant" in candidate.funding_evidence.lower()
+    assert candidate.mode_evidence  # an in-person cue was captured
+
+
+def test_confidence_drops_when_fields_are_missing() -> None:
+    page = _page(
+        "Hydrology summer school. Dates: 1 July 2027 to 12 July 2027. "
+        "Application deadline: 1 March 2027. Topics include hydrology."
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    # deadline + duration resolved (2), funding/fee and mode unresolved (0) -> 0.5
+    assert candidate.extraction_confidence == 0.5
+    assert candidate.deadline_evidence and candidate.duration_evidence
+
+
+def test_site_shows_confidence_and_evidence_tooltip(tmp_path) -> None:
+    candidate = apply_hard_filters(sample_candidate(PROFILE), PROFILE)
+    ranked = rank_candidates([candidate])
+    html = write_site(ranked, [], tmp_path).read_text(encoding="utf-8")
+    assert 'class="conf"' in html
+    assert "Extraction confidence:" in html
+    assert "data-confidence=" in html
+
+
 def test_compact_same_month_date_range_is_parsed() -> None:
     page = _page(
         "Mathematics summer school. In-person training. "

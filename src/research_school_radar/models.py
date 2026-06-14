@@ -62,6 +62,12 @@ class Candidate:
     score: float = 0.0
     score_explanation: list[str] = field(default_factory=list)
     first_seen: date | None = None
+    # Supporting source text for the high-risk fields, and a transparent
+    # heuristic confidence (fraction of core fields that were resolved).
+    deadline_evidence: str = ""
+    duration_evidence: str = ""
+    mode_evidence: str = ""
+    extraction_confidence: float = 0.0
 
     @property
     def is_new(self) -> bool:

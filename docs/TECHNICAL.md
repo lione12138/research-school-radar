@@ -46,7 +46,7 @@ This repository now contains a working MVP:
 
 - fixed-source scanner for trusted academic and research organizations
 - second-level candidate link following from source pages
-- rule-based extraction for title, type, organizer, location, dates, duration, deadline, funding, topics, eligibility, fee, normalized EUR fee, and mode
+- rule-based extraction for title, type, organizer, location, dates, duration, deadline, funding, topics, eligibility, fee, normalized EUR fee, and mode, with per-field source evidence and a transparent extraction-confidence score (the fraction of the four high-risk fields that were resolved)
 - hard filtering that separates fully qualified opportunities from near-matches
 - interpretable ranking
 - Markdown report generation
