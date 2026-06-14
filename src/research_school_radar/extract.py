@@ -61,7 +61,15 @@ GENERIC_TITLES = {
 
 # Substrings that mark a title as a section, archive, or navigation label
 # rather than a single opportunity.
-_SECTION_TITLE_WORDS = ("navigation", "archive", "search results")
+_SECTION_TITLE_WORDS = (
+    "navigation",
+    "archive",
+    "search results",
+    "important dates",
+    "abstract submission",
+    "governing",
+    "registration & instructions",
+)
 
 ONLINE_ONLY_PATTERNS = [r"online-only", r"fully online", r"online course", r"webinar"]
 IN_PERSON_PATTERNS = [r"in[- ]person", r"on[- ]site", r"residential", r"field school", r"venue", r"hosted in"]

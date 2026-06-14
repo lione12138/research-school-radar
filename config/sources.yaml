@@ -315,6 +315,47 @@ sources:
     keywords: [geoscience, geology, short course]
     scan_frequency: every_run
     notes: Geological Society of America. Direct event-list path 404s for scripted requests; homepage links current events.
+  - name: EAGE
+    url: https://eage.org/events/calendar-of-events/
+    layer: 1
+    region: continental Europe
+    source_type: scientific_society
+    keywords: [geophysics, geoscience, near-surface, short course]
+    scan_frequency: every_run
+    notes: European Association of Geoscientists and Engineers; runs many short courses and education days.
+  - name: EarthScope
+    url: https://www.earthscope.org/event/
+    layer: 1.5
+    region: North America
+    source_type: research_consortium
+    keywords: [seismology, geodesy, geophysics, short course]
+    scan_frequency: every_run
+    notes: EarthScope Consortium (formerly IRIS/UNAVCO); seismology and geodesy short courses and summer workshops.
+  - name: CIG Geodynamics
+    url: https://geodynamics.org/events
+    layer: 2
+    region: North America
+    source_type: research_network
+    keywords: [geodynamics, computational geoscience, modelling, workshop]
+    scan_frequency: every_run
+    notes: Computational Infrastructure for Geodynamics; computational geoscience workshops and training.
+  - name: EUMETSAT Training
+    url: https://classroom.eumetsat.int/
+    layer: 1
+    region: continental Europe
+    source_type: agency
+    keywords: [meteorology, climate, remote sensing, earth observation, training]
+    scan_frequency: every_run
+    notes: EUMETSAT training portal for satellite meteorology and climate.
+  - name: Climate Change AI
+    url: https://www.climatechange.ai/events
+    layer: 1.5
+    region: global
+    source_type: research_network
+    keywords: [AI, machine learning, climate, scientific machine learning, summer school]
+    scan_frequency: every_run
+    enabled: false
+    notes: Climate Change AI runs a well-known AI-for-climate summer school, exactly on-domain, but the events page is partly client-side rendered (no opportunity signal for scripted fetches). Revisit with rendering or a data endpoint.
   - name: Summer Schools in Europe
     url: https://www.summerschoolsineurope.eu/
     layer: 2
@@ -343,14 +384,13 @@ sources:
     render: true
     notes: Content is rendered client-side, so this source uses the optional Playwright headless browser. Falls back to an empty fetch if Playwright is not installed.
   - name: ICTP
-    url: https://www.ictp.it/scientific-calendar
+    url: https://www.ictp.it/home/scientific-calendar
     layer: 1
     region: continental Europe
     source_type: research_institute
-    keywords: [climate, physics, AI, school, workshop]
+    keywords: [climate, geophysics, physics, AI, school, workshop]
     scan_frequency: every_run
-    enabled: false
-    notes: Highly relevant (Abdus Salam ICTP runs many funded schools) but the site returns 404 for scripted requests on every known listing path. Re-enable when a stable public listing or feed is found.
+    notes: Abdus Salam ICTP runs many funded schools in geophysics, climate, and scientific ML. The /scientific-calendar path 404s; /home/scientific-calendar works for scripted requests.
   - name: LxMLS
     url: https://lxmls.it.pt/
     layer: 2
