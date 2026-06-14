@@ -6,7 +6,7 @@ from datetime import date
 
 from dateutil import parser as date_parser
 
-from .adapters import adapter_for
+from .adapters import resolve_overrides
 from .models import Candidate, Page, Source
 from .parse import OPPORTUNITY_TERMS, has_programme_signal, is_excluded_programme
 from .utils import clean_space, evidence_window, first_match
@@ -88,7 +88,7 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         return None
 
     text = page.text
-    overrides = adapter_for(page.url)(page) if adapter_for(page.url) else {}
+    overrides = resolve_overrides(page)
 
     # schema.org JSON-LD is authoritative when the page describes exactly one
     # event; several event nodes mean a calendar/listing page. A per-site adapter
@@ -182,7 +182,7 @@ def extract_candidate(page: Page, profile: dict) -> Candidate | None:
         target_level=_target_level(text),
         fee=fee,
         fee_eur=fee_eur,
-        application_link=page.url,
+        application_link=str(overrides.get("application_link") or page.url),
         source_url=page.url,
         summary=_summary(text),
         recommendation_reason="",

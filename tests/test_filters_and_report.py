@@ -178,6 +178,46 @@ def _page(text: str, *, html: str = "", title: str = "Test School") -> Page:
     return Page(url=source.url, title=title, text=text, html=html, source=source, fetched_at=date.today())
 
 
+def test_events_calendar_adapter_reads_structured_fields() -> None:
+    html = (
+        '<html><body class="single-tribe_events">'
+        "<h1>Hydrology Summer School</h1>"
+        '<abbr class="tribe-events-start-date dtstart" title="2027-07-01">July 1</abbr>'
+        '<abbr class="tribe-events-end-date dtend" title="2027-07-12">July 12</abbr>'
+        '<dd class="tribe-venue">River Institute</dd>'
+        '<dd class="tribe-venue-location">Delft, Netherlands + Google Map</dd>'
+        '<dd class="tribe-events-event-url"><a href="https://apply.example.org/school">Website</a></dd>'
+        "</body></html>"
+    )
+    page = _page(
+        "Hydrology summer school. In-person training. Application deadline: 1 March 2027. "
+        "Topics include hydrology.",
+        html=html,
+        title="Hydrology Summer School",
+    )
+    candidate = extract_candidate(page, PROFILE)
+    assert candidate is not None
+    assert candidate.start_date == date(2027, 7, 1)
+    assert candidate.end_date == date(2027, 7, 12)
+    assert candidate.location == "River Institute, Delft, Netherlands"
+    # The official application URL replaces the source page as the apply link.
+    assert candidate.application_link == "https://apply.example.org/school"
+
+
+def test_events_calendar_listing_is_not_treated_as_single_event() -> None:
+    # Several start-date markers mean a calendar list; the adapter must stay out.
+    html = (
+        '<html><body class="tribe-events-list">'
+        '<abbr class="tribe-events-start-date dtstart" title="2027-07-01">July 1</abbr>'
+        '<abbr class="tribe-events-start-date dtstart" title="2027-08-01">Aug 1</abbr>'
+        "</body></html>"
+    )
+    from research_school_radar.adapters import resolve_overrides
+
+    page = _page("Events.", html=html, title="Events")
+    assert "start_date" not in resolve_overrides(page)
+
+
 def test_icimod_adapter_reads_structured_block() -> None:
     source = Source(
         name="ICIMOD",

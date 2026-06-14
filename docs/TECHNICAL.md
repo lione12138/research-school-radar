@@ -47,6 +47,7 @@ This repository now contains a working MVP:
 - fixed-source scanner for trusted academic and research organizations
 - second-level candidate link following from source pages
 - rule-based extraction for title, type, organizer, location, dates, duration, deadline, funding, topics, eligibility, fee, normalized EUR fee, and mode, with per-field source evidence and a transparent extraction-confidence score (the fraction of the four high-risk fields that were resolved)
+- schema.org JSON-LD parsing and extraction adapters: domain adapters (ICIMOD) and structural adapters keyed by markup rather than site, e.g. WordPress "The Events Calendar" (used by ESA EO4Society, IEEE GRSS, and many academic event sites), which yields reliable dates, venue, and the official external application URL
 - hard filtering that separates fully qualified opportunities from near-matches
 - interpretable ranking
 - Markdown report generation

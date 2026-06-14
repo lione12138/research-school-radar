@@ -581,7 +581,9 @@ def _near_row(candidate: Candidate) -> str:
 
 
 def _link(candidate: Candidate) -> str:
-    return f'<a href="{escape(candidate.source_url, quote=True)}">{escape(candidate.title)}</a>'
+    # Prefer the official application page (set by adapters) over the source page.
+    href = candidate.application_link or candidate.source_url
+    return f'<a href="{escape(href, quote=True)}">{escape(candidate.title)}</a>'
 
 
 def _new_badge(candidate: Candidate) -> str:
