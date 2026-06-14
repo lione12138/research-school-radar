@@ -32,7 +32,7 @@ jobs:
       - name: Run tests
         run: pytest
       - name: Cache Playwright browser
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ runner.os }}
