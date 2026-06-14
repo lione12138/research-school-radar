@@ -586,6 +586,46 @@ def test_ranking_deduplicates_same_title_and_organizer() -> None:
     assert len(ranked) == 1
 
 
+def test_render_flag_is_loaded_from_sources() -> None:
+    sources = _load_sources(Path("config/sources.yaml"))
+    cern = next((s for s in sources if s.name == "CERN Academic Training"), None)
+    assert cern is not None
+    assert cern.render is True
+    # Sources without the flag default to plain requests.
+    assert all(s.render is False for s in sources if s.name != "CERN Academic Training")
+
+
+def test_render_fetch_falls_back_when_playwright_missing(monkeypatch) -> None:
+    import research_school_radar.collect as collect_module
+
+    captured = {}
+
+    class _Resp:
+        url = "https://example.org/rendered"
+        text = "<html><title>Plain</title><body>fallback</body></html>"
+
+        def raise_for_status(self) -> None:
+            pass
+
+    def fake_get(url, headers=None, timeout=None):
+        captured["url"] = url
+        return _Resp()
+
+    monkeypatch.setattr("research_school_radar.render.render_available", lambda: False)
+    monkeypatch.setattr(collect_module.requests, "get", fake_get)
+    source = Source(
+        name="Rendered Source",
+        url="https://example.org/rendered",
+        layer="1",
+        region="global",
+        source_type="x",
+        render=True,
+    )
+    page = collect_module.fetch_source(source)
+    assert captured["url"] == "https://example.org/rendered"
+    assert "fallback" in page.text
+
+
 def test_disabled_sources_are_not_loaded() -> None:
     sources = _load_sources(Path("config/sources.yaml"))
     names = {source.name for source in sources}

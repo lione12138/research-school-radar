@@ -122,6 +122,7 @@ def _load_sources(path: Path) -> list[Source]:
             notes=str(item.get("notes", "")),
             enabled=bool(item.get("enabled", True)),
             blocked_link_domains=list(item.get("blocked_link_domains", [])),
+            render=bool(item.get("render", False)),
         )
         for item in config.get("sources", [])
         if bool(item.get("enabled", True))

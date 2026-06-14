@@ -17,6 +17,7 @@ class Source:
     notes: str = ""
     enabled: bool = True
     blocked_link_domains: list[str] = field(default_factory=list)
+    render: bool = False
 
 
 @dataclass(slots=True)

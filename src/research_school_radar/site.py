@@ -460,6 +460,8 @@ def _source_row(source: dict[str, Any]) -> str:
     blocked_domains = _list_value(source.get("blocked_link_domains"))
     if blocked_domains:
         notes = f"{notes} Blocked linked domains: {', '.join(blocked_domains)}".strip()
+    if source.get("render"):
+        notes = f"{notes} Rendered with a headless browser.".strip()
     return (
         "<tr>"
         f"<td>{source_link}</td>"

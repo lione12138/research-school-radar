@@ -319,6 +319,19 @@ The Brave Search free plan is sufficient; the scanner spaces queries about one s
 
 Without the key, the project still runs normally using fixed sources.
 
+## Optional Headless Rendering
+
+Most sources return their content in the served HTML and are fetched with `requests`. A minority render content client-side, so the served HTML is an empty shell. Such a source can set `render: true` in `config/sources.yaml`, and the scanner loads it in headless Chromium via Playwright instead.
+
+Playwright is an optional dependency. Install it with:
+
+```powershell
+pip install -e ".[render]"
+python -m playwright install chromium
+```
+
+When Playwright is not installed, a `render: true` source falls back to a plain request automatically, so the default workflow stays lightweight. The daily GitHub Actions workflow installs the browser (cached between runs) so rendered sources work in CI.
+
 ## Local Development
 
 Install and run:

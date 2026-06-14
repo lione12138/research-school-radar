@@ -329,6 +329,15 @@ sources:
     keywords: [summer school, multidisciplinary]
     scan_frequency: every_run
     notes: One of Europe's largest summer school programmes; most courses charge fees, so many records surface as near-matches unless funding is explicit.
+  - name: CERN Academic Training
+    url: https://academictraining.cern.ch/
+    layer: 1.5
+    region: continental Europe
+    source_type: research_institute
+    keywords: [physics, computing, data science, lectures]
+    scan_frequency: every_run
+    render: true
+    notes: Content is rendered client-side, so this source uses the optional Playwright headless browser. Falls back to an empty fetch if Playwright is not installed.
   - name: ICTP
     url: https://www.ictp.it/scientific-calendar
     layer: 1

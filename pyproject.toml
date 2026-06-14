@@ -41,6 +41,11 @@ dev = [
   "pytest>=8.0",
   "responses>=0.25",
 ]
+# Headless-browser rendering for JavaScript-heavy sources (sources with
+# `render: true`). After installing, run: playwright install chromium
+render = [
+  "playwright>=1.40",
+]
 
 [project.scripts]
 school-radar = "research_school_radar.cli:main"

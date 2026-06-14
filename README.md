@@ -26,10 +26,10 @@ _Last scan: 2026-06-14 · 0 fully qualified · 5 still-open near-matches shown_
 | title | type | organizer | location | duration | deadline | funding / fee | topic |
 |---|---|---|---|---|---|---|---|
 | [Glacial Lake Outburst Flood Risk Assessment: Applied Field Workshop and Monitoring at Drang Drung Glacier](https://www.icimod.org/event/cryosphere-and-water/glacial-lake-outburst-flood-risk-assessment-field-workshop/) | workshop | ICIMOD | Drang Drung Glacier, Zanskar, India | 1 Jun – 15 Jun 2026 · 15 days | uncertain | Funding or fee not stated | water resources, water, climate, biodiversity |
-| [International Summer School by Algebra Bernays University](https://www.summerschoolsineurope.eu/destination/algebra-international-summer-school/) | summer school | Summer Schools in Europe | Europe | 29 Jun – 24 Jul 2026 · 26 days | uncertain | Funding or fee not stated | AI, computer science, engineering, economics |
 | [51st biannual research and training workshop](https://www.icimod.org/event/regional-action/51st-biannual-research-and-training-workshop/) | capacity building | ICIMOD | Kathmandu, Nepal | 11 Jun – 16 Jun 2026 · 6 days | uncertain | Funding or fee not stated | water resources, water, climate, biodiversity |
 | [2026 S2S Land-atmosphere Interactions Workshop](https://ncarprojects.ucar.edu/S2S-predictability/2026-s2s-land-atmosphere-interactions-workshop) | workshop | GEWEX | global | 4 Aug – 6 Aug 2026 · 3 days | uncertain | Funding or fee not stated | water resources, water, meteorology, agriculture |
 | [Strengthening local voices: storytelling training for journalists](https://www.icimod.org/event/economies/hi-cas-storytelling-workshop-nepal/) | workshop | ICIMOD | ICIMOD LML | 8 Jun – 10 Jun 2026 · 3 days | uncertain | Funding or fee not stated | water resources, water, climate, biodiversity |
+| [IEEE GRSS Summer School on UAS-Based GNSS-R Remote Sensing](https://www.grss-ieee.org/event/ieee-grss-summer-school-on-uas-based-gnss-r-remote-sensing/) | summer school | IEEE GRSS | University of Michigan, Ann Arbor, USA | 14 Jul – 16 Jul 2026 · 3 days | uncertain | Funding or fee not stated | water, climate, remote sensing, earth observation |
 
 <!-- radar:results:end -->
 

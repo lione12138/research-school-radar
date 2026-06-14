@@ -13,6 +13,13 @@ DEFAULT_TIMEOUT = 20
 
 
 def fetch_source(source: Source, user_agent: str = "research-school-radar/0.1") -> Page:
+    if getattr(source, "render", False):
+        from .render import fetch_rendered, render_available
+
+        if render_available():
+            return fetch_rendered(source, user_agent)
+        # Playwright is not installed: fall back to a plain request. JS-rendered
+        # pages will yield little, but the scan still runs.
     headers = {"User-Agent": user_agent, "Accept-Encoding": "identity"}
     response = requests.get(source.url, headers=headers, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()

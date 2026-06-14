@@ -28,9 +28,16 @@ jobs:
           cache: pip
       - uses: actions/configure-pages@v6
       - name: Install
-        run: pip install -e ".[dev]"
+        run: pip install -e ".[dev,render]"
       - name: Run tests
         run: pytest
+      - name: Cache Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}
+      - name: Install headless browser
+        run: python -m playwright install --with-deps chromium
       - name: Run scan
         run: python -m research_school_radar.cli scan
       - name: Commit report
